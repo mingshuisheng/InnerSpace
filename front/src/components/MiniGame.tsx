@@ -2,6 +2,7 @@
 
 import {useCallback, useState} from "react";
 import {useLongPush} from "@/utils/EventUtils";
+import {usePathname} from "next/navigation";
 
 export function MiniGame() {
   const [count, setCount] = useState<number>(0);
@@ -12,9 +13,11 @@ export function MiniGame() {
   const buttonClick = useCallback(() => {
     setCount(count => count + 1)
   }, [])
+  let pathname = usePathname();
 
   return (
     <div
+      style={{display: pathname === "/"? "flex": "none"}}
       ref={buttonRef}
       onTouchStart={buttonClick}
       onMouseDown={buttonClick}

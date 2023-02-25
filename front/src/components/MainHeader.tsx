@@ -1,42 +1,47 @@
 "use client"
 
 import {useRouter, usePathname} from "next/navigation";
-import {useTheme} from "@/utils/ThemeUtils";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import {IconButton, Tabs, Tab} from '@mui/material';
+import {NavData} from "@/types/NavData";
 
 type Props = {
-  navData: { title: string, href: string }[]
+  navData: NavData[]
 }
 
 export function MainHeader(props: Props) {
   let router = useRouter();
   let pathname = usePathname();
 
-  const {theme, toggleTheme} = useTheme();
+  let selectIndex = props.navData.findIndex((nav, index) => {
+      if (nav.matcher === "/") {
+        return pathname === "/"
+      }
+      return new RegExp(nav.matcher || "").test(pathname || "")
+    }
+  )
+  selectIndex = selectIndex === -1 ? 0 : selectIndex
 
   return (
     <header className="px-10 shadow-md">
       <div className="flex items-center justify-between h-11">
         <div className="font-bold text-2xl">Inner Space</div>
-        <nav className="flex h-full text-base">
-          <ul className="flex h-full">
+        <div className="flex-1 flex justify-end">
+          <Tabs value={selectIndex.toString()}>
             {
-              props.navData.map(nav => (
-                pathname == nav.href ?
-                  <li key={nav.href}
-                      className="w-20 h-full flex items-center justify-center m-auto bg-blue-300">
-                    {nav.title}
-                  </li> :
-                  <li key={nav.href} onClick={() => router.push(nav.href)}
-                      className="select-none w-20 h-full flex items-center justify-center m-auto hover:bg-blue-300 active:bg-blue-400 hover:cursor-pointer">
-                    {nav.title}
-                  </li>
+              props.navData.map((nav, index) => (
+                <Tab key={nav.href} onClick={() => {
+                  router.push(nav.href)
+                }} value={index.toString()} label={nav.title}/>
               ))
             }
-          </ul>
-          <div onClick={toggleTheme} className="hidden w-10 select-none flex justify-center items-center hover:cursor-pointer">
-            {theme}
-          </div>
-        </nav>
+          </Tabs>
+          <IconButton onClick={() => {
+            window.open("https://github.com/mingshuisheng/InnerSpace")
+          }} aria-label="github main page">
+            <GitHubIcon sx={{color: "#000"}}/>
+          </IconButton>
+        </div>
       </div>
     </header>
   )

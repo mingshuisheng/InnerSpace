@@ -11,6 +11,13 @@ export default function Home() {
         <div>
           没有任何特殊意义，只是随便起的名字
         </div>
+
+        <div className="pt-10">
+          全栈工程师，技多不压身。<br/>
+          前后端皆通，产品也精巧。<br/>
+          难得有闲暇，常为需求忙。<br/>
+          若问薪水高，不如自己猜。<br/>
+        </div>
       </div>
     </div>
   )
