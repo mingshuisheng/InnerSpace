@@ -23,3 +23,8 @@ export class Note {
   @DeleteDateColumn()
   deleteDate: Date
 }
+
+export const NoteNotFound = new Note()
+
+NoteNotFound.id = -1
+NoteNotFound.name = "未找到"

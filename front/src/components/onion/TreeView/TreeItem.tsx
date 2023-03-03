@@ -1,4 +1,4 @@
-import {Children, FC, PropsWithChildren, useCallback, useEffect, useState} from "react";
+import {Children, FC, PropsWithChildren, ReactNode, useCallback, useEffect, useState} from "react";
 import {HiChevronDown, HiChevronRight} from "react-icons/hi";
 import {useAutoAnimate} from '@formkit/auto-animate/react'
 import classNames from "classnames";
@@ -7,10 +7,11 @@ import {useTreeViewContext} from "@/components/onion/TreeView/TreeViewContext";
 
 export interface TreeItemProps extends PropsWithChildren {
   id: number
-  label: string
+  label: ReactNode
+  title?: string
 }
 
-export const TreeItem: FC<TreeItemProps> = ({children, id, label}) => {
+export const TreeItem: FC<TreeItemProps> = ({children, id, label, title}) => {
   const [parent] = useAutoAnimate()
   const {selectedId, onChange, expendedIds} = useTreeViewContext();
   const [isOpen, setIsOpen] = useState(expendedIds.includes(id));
@@ -20,6 +21,10 @@ export const TreeItem: FC<TreeItemProps> = ({children, id, label}) => {
       onChange(id)
     }
   }, [selectedId])
+
+  if(!title){
+    title = typeof label === "string"? label: ""
+  }
 
   const iconClass = "h-5 w-5"
   const onClass = 'bg-gray-100 text-blue-600 dark:bg-gray-800 dark:text-blue-500'
@@ -38,13 +43,13 @@ export const TreeItem: FC<TreeItemProps> = ({children, id, label}) => {
               <HiChevronRight onClick={() => setIsOpen(open => !open)} className={iconClass}/> :
               <HiChevronDown onClick={() => setIsOpen(open => !open)} className={iconClass}/>
         }
-        <div title={label} onClick={handleClick} className="whitespace-nowrap">
+        <div onClick={handleClick} className="whitespace-nowrap">
           {label}
         </div>
       </div>
       {
         !isOpen ? "" :
-          <div className="pl-4">
+          <div title={title} className="pl-4">
             {children}
           </div>
       }

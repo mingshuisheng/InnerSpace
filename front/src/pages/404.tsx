@@ -5,10 +5,10 @@ type Props = {
 
 }
 
-const More: FC = () => {
-  return (
+const _404: FC<Props> = () => {
+  return(
     <div>
-      关于页面
+      找不到页面
     </div>
   )
 }
@@ -21,4 +21,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   }
 }
 
-export default More
+export default _404

@@ -95,7 +95,16 @@ footer {
     border-radius: 10px;
 }
 
+/*.dark *::-webkit-scrollbar-thumb {*/
+/*    background: rgb(17 24 10);*/
+/*}*/
+
+
 *::-webkit-scrollbar-track {
     border-radius: 10px;
     background-color: #eee;
 }
+
+/*.dark *::-webkit-scrollbar-track {*/
+/*    background: #fff;*/
+/*}*/

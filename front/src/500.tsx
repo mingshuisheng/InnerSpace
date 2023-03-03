@@ -5,10 +5,10 @@ type Props = {
 
 }
 
-const More: FC = () => {
-  return (
+const _500: FC<Props> = () => {
+  return(
     <div>
-      关于页面
+      服务器错误
     </div>
   )
 }
@@ -21,4 +21,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   }
 }
 
-export default More
+export default _500

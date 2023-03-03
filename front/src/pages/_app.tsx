@@ -31,7 +31,12 @@ const navDataEnd: NavData[] = [
     title: "更多",
     href: "/more",
     matcher: "^/more$"
-  }
+  },
+  {
+    title: "管理页面",
+    href: "/admin/note",
+    matcher: "^/admin/note$"
+  },
 ]
 
 const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {

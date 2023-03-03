@@ -1,8 +1,13 @@
 import {FC} from "react";
 import {Head} from "@/components";
 import {MiniGame} from "@/components/home/MiniGame";
+import {GetStaticProps} from "next";
 
-const Home: FC = () => {
+type Props = {
+
+}
+
+const Home: FC<Props> = () => {
 
   return (
     <Head pageTitle="主页">
@@ -30,5 +35,13 @@ const Home: FC = () => {
     </Head>
   )
 };
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+
+  return {
+    props: {
+    },
+  }
+}
 
 export default Home;

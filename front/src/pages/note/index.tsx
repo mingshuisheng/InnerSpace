@@ -12,7 +12,11 @@ const Note: FC<Props> = () => {
   return (
     <Head pageTitle="笔记页面">
       <div>
-        笔记页面
+        {
+          new Array(100).fill(0).map((_, item) => (
+            <div key={item}>笔记页面</div>
+          ))
+        }
       </div>
     </Head>
   )

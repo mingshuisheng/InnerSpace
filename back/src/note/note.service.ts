@@ -1,8 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {CreateNoteDto} from './dto/create-note.dto';
 import {UpdateNoteDto} from './dto/update-note.dto';
-import {Note} from "../entity/note.entity";
-import {getManager, Repository} from "typeorm";
+import {Note, NoteNotFound} from "../entity/note.entity";
+import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {RootNoteVo} from "./vo/root-note.vo";
 
@@ -49,12 +49,33 @@ export class NoteService {
     return `This action returns a #${id} note`;
   }
 
-  update(id: number, updateNoteDto: UpdateNoteDto) {
-    return `This action updates a #${id} note`;
+  async update(id: number, updateNoteDto: UpdateNoteDto) {
+    const note = await this.noteRepository.findOneBy({id});
+
+    if (!note){
+      return NoteNotFound
+    }
+
+    note.name = updateNoteDto.name;
+    if (updateNoteDto.parentId && note.parentId !== updateNoteDto.parentId) {
+      const parentNote = await this.noteRepository.findOneBy({
+        id: updateNoteDto.parentId
+      })
+      if (parentNote){
+        note.parentId = parentNote.id
+        note.treeId = parentNote.treeId + "-" + note.id
+      }
+    }
+
+    return this.noteRepository.save(note);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} note`;
+  async remove(id: number) {
+    const note = await this.noteRepository.findOneBy({id});
+    if(!note){
+      return NoteNotFound
+    }
+    return await this.noteRepository.remove(note)
   }
 
   async buildTree() {

@@ -3,3 +3,8 @@ export type NoteData = {
   name: string
   children?: NoteData[]
 }
+
+export const RootNoteData: NoteData = {
+  id: 0,
+  name: "root",
+}

@@ -12,7 +12,7 @@ import {Note} from "./entity/note.entity";
     NoteModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '192.168.2.170',
       port: 3306,
       username: 'root',
       password: 'root',
