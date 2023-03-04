@@ -2,6 +2,7 @@ export default (start: number, end: number): number[] => {
   if (start >= end) {
     return [];
   }
+  let arr = new Array(end - start - 1).fill(0).map((_, index) => index)
 
-  return [...Array(end - start + 1).keys()].map((key: number): number => key + start);
+  return arr.map((key: number): number => key + start);
 };
