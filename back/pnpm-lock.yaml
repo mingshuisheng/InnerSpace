@@ -14,6 +14,7 @@ specifiers:
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
   '@types/supertest': ^2.0.11
+  '@types/uuid': ^9.0.1
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
   cache-manager: ^5.1.7
@@ -35,6 +36,7 @@ specifiers:
   tsconfig-paths: 4.1.1
   typeorm: ^0.3.12
   typescript: ^4.7.4
+  uuid: ^9.0.0
 
 dependencies:
   '@nestjs/common': 9.3.9_nza3ix4qrkhc5teka4arycjvca
@@ -42,6 +44,7 @@ dependencies:
   '@nestjs/mapped-types': 1.2.2_sm5si6oczf3vcbfl6qa276t67m
   '@nestjs/platform-express': 9.3.9_77foi4w27ghy47yutmnzv7krjy
   '@nestjs/typeorm': 9.0.1_rfqdnwiybzocqbxtj3lzfvraga
+  '@types/uuid': 9.0.1
   cache-manager: 5.1.7
   class-transformer: 0.5.1
   class-validator: 0.14.0
@@ -49,6 +52,7 @@ dependencies:
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
   typeorm: 0.3.12_svueicy7jt4clq2rsbe7j7o2ii
+  uuid: 9.0.0
 
 devDependencies:
   '@nestjs/cli': 9.2.0
@@ -1276,6 +1280,10 @@ packages:
     dependencies:
       '@types/superagent': 4.1.16
     dev: true
+
+  /@types/uuid/9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+    dev: false
 
   /@types/validator/13.7.12:
     resolution: {integrity: sha512-YVtyAPqpefU+Mm/qqnOANW6IkqKpCSrarcyV269C8MA8Ux0dbkEuQwM/4CjL47kVEM2LgBef/ETfkH+c6+moFA==}

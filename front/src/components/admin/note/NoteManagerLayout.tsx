@@ -13,7 +13,14 @@ export interface NoteManagerLayout extends PropsWithChildren {
   onSelectionChange: (id: number) => void
 }
 
-export const NoteManagerLayout: FC<NoteManagerLayout> = ({noteDataList, onAdd, onEdit, onDelete, onSelectionChange}) => {
+export const NoteManagerLayout: FC<NoteManagerLayout> = ({
+                                                           children,
+                                                           noteDataList,
+                                                           onAdd,
+                                                           onEdit,
+                                                           onDelete,
+                                                           onSelectionChange
+                                                         }) => {
 
   return (
     <NoteManagerContext.Provider value={{
@@ -27,11 +34,7 @@ export const NoteManagerLayout: FC<NoteManagerLayout> = ({noteDataList, onAdd, o
         <Divider/>
         <Flex1Full>
           <div className="w-full h-full overflow-auto p-2 box-border">
-            {
-              new Array(100).fill(0).map((_, item) => (
-                <div key={item}>11111</div>
-              ))
-            }
+            {children}
           </div>
         </Flex1Full>
       </div>
