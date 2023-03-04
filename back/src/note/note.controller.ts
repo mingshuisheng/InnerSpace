@@ -12,6 +12,7 @@ import {
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import {PatchNoteDetailDto} from "./dto/patch-note-detail.dto";
 
 @Controller('note')
 
@@ -48,5 +49,15 @@ export class NoteController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.noteService.remove(+id);
+  }
+
+  @Patch('/detail/:id')
+  changeDetail(@Param('id') id: string, @Body() patchNoteDetailDto: PatchNoteDetailDto) {
+    return this.noteService.changeDetail(+id, patchNoteDetailDto.noteDetail);
+  }
+
+  @Get('/detail/:id')
+  getDetail(@Param('id') id: string) {
+    return this.noteService.getDetail(+id);
   }
 }

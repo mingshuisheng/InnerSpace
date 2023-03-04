@@ -1,11 +1,10 @@
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
-import {DeleteNoteLayer, Head, Modal, NoteManagerLayout} from "@/components";
+import {DeleteNoteLayer, Head, Markdown, Modal, NoteManagerLayout} from "@/components";
 import {NoteData, RootNoteData} from "@/types/NoteData";
 import {getNoteTree} from "@/server/api";
 import {Button, TextInput} from "flowbite-react";
 import {flatNoteData} from "@/utils/DataUtils";
-import {addNote, deleteNote, modifyNote} from "@/server/api/note";
-import {Simulate} from "react-dom/test-utils";
+import {addNote, deleteNote, getNoteDetail, modifyNote} from "@/server/api/note";
 
 
 type State = {
@@ -21,6 +20,8 @@ const NoteManager: FC = () => {
   const [state, setState] = useState<State>({type: "add", noteData: RootNoteData})
   const [selectedNote, setSelectedNote] = useState<NoteData>({id: 0, name: "root"})
   const [inputValue, setInputValue] = useState<string>("")
+
+  const {noteContent, loadContent, setNoteContent} = useNoteDetail();
 
   const noteMap = useMemo(() =>
     flatNoteData(...noteDataList)
@@ -57,6 +58,7 @@ const NoteManager: FC = () => {
   }, [noteMap])
 
   const handleSelection = useCallback((id: number) => {
+    loadContent(id).then(null)
     setSelectedNote(noteMap.get(id)!)
   }, [noteMap])
 
@@ -92,6 +94,19 @@ const NoteManager: FC = () => {
     <Head pageTitle={selectedNote.id === 0 ? "笔记管理页面" : "笔记-" + selectedNote.name}>
       <NoteManagerLayout noteDataList={noteDataList} onAdd={handlerAdd} onEdit={handlerEdit} onDelete={handlerDelete}
                          onSelectionChange={handleSelection}>
+        <div className="flex h-full w-full gap-2">
+          <div className="w-1/2 box-border">
+            <textarea className="w-full h-full resize-none rounded box-border" value={noteContent}
+                      onChange={e => setNoteContent(e.target.value)}/>
+          </div>
+          <div className="w-1/2 p-2 box-border border-2 rounded">
+            <div className="h-full w-full overflow-auto">
+              <Markdown>
+                {noteContent}
+              </Markdown>
+            </div>
+          </div>
+        </div>
       </NoteManagerLayout>
 
       <Modal
@@ -129,5 +144,16 @@ const useNoteList = () => {
   }, [])
   return {noteDataList, reloadTree}
 }
+
+const useNoteDetail = () => {
+  const [noteContent, setNoteContent] = useState<string>("")
+  const loadContent = useCallback(async function (id: number) {
+    let data = await getNoteDetail(id);
+    setNoteContent(data.detail || "无数据")
+  }, [setNoteContent])
+
+  return {noteContent, loadContent, setNoteContent}
+}
+
 
 export default NoteManager

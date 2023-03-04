@@ -11,8 +11,11 @@ export class Note {
   @Column({default: 0})
   parentId: number
 
-  @Column({default:""})
+  @Column({default:"", type: "varchar", length: "100"})
   treeId: string
+
+  @Column({default:"", type: "varchar", length: "100"})
+  noteDetail: string
 
   @CreateDateColumn()
   createDate: Date
