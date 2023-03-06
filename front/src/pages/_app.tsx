@@ -18,7 +18,7 @@ const navDataStart: NavData[] = [
   {
     title: "笔记",
     href: "/note/0",
-    matcher: "^/note/?\\d*"
+    matcher: "^/note"
   },
 ]
 
@@ -54,11 +54,7 @@ const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {
       <Flowbite theme={{theme}}>
         <Layout navDataList={localNavData}>
           {
-            new RegExp(navDataStart[1].matcher || "").test(router.pathname) ?
-              <NoteLayout noteDataList={pageProps.noteDataList || []}>
-                <Component {...pageProps} />
-              </NoteLayout> :
-              <Component {...pageProps} />
+            <Component {...pageProps} />
           }
         </Layout>
       </Flowbite>

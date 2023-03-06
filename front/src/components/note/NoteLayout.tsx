@@ -12,8 +12,7 @@ export interface NoteLayoutProps extends PropsWithChildren {
 export const NoteLayout: FC<NoteLayoutProps> = ({children, noteDataList}) => {
   const router = useRouter();
   const handlerTreeItemClick = useCallback((data: NoteData) => {
-    const url = data.id === 0 ? "/note" : `/note/${data.id}`
-    router.push(url).then(null)
+    router.push(`/note/${data.id}`).then(null)
   }, [])
 
   let selectedNoteData = RootNoteData
