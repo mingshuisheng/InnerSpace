@@ -1,30 +1,45 @@
-import {FC, PropsWithChildren, useCallback, useState} from "react";
+import {FC, memo, useCallback} from "react";
 import {useAutoAnimate} from '@formkit/auto-animate/react'
-import {TreeViewContext} from "@/components/onion/TreeView/TreeViewContext";
+import {TreeViewContext} from "./TreeViewContext";
+import {TreeData, TreeItemLabelProps} from "./types";
+import {TreeItem} from "./TreeItem";
+import {TreeItemLabel} from "@/components/onion/TreeView/TreeItemLabel";
 
-export interface TreeViewProps extends PropsWithChildren {
-  defaultSelectedId?: number
-  expendedIds?: number[]
+export interface TreeViewProps {
+  selectedData?: TreeData
 
-  onSelectionChange?(id: number): void
+  dataArr: TreeData[]
+  treeItemLabel?: FC<TreeItemLabelProps>
+
+  onSelectionChange?(data: TreeData): void
 }
 
-export const TreeView: FC<TreeViewProps> = ({children, defaultSelectedId = 0, expendedIds = [], onSelectionChange}) => {
+export const TreeView: FC<TreeViewProps> = memo(({
+                                                   selectedData,
+                                                   dataArr,
+                                                   onSelectionChange,
+                                                   treeItemLabel = TreeItemLabel
+                                                 }) => {
   const [parent] = useAutoAnimate()
 
-  const [selectedId, setSelectedId] = useState(defaultSelectedId)
-
-  const handlerChange = useCallback((nextId: number) => {
-    setSelectedId(nextId)
-    onSelectionChange?.(nextId)
+  const handlerItemClick = useCallback((data: TreeData) => {
+    onSelectionChange?.(data)
   }, [onSelectionChange])
 
+  if (!selectedData) {
+    selectedData = dataArr[0]
+  }
+
   return (
-    <TreeViewContext.Provider value={{selectedId, expendedIds, onChange: handlerChange}}>
+    <TreeViewContext.Provider value={{selectedTreeData: selectedData, onItemClick: handlerItemClick, treeItemLabel}}>
       <div ref={parent} className="flex flex-col">
-        {children}
+        {
+          dataArr.map(data => (
+            <TreeItem key={data.id} data={data}/>
+          ))
+        }
       </div>
       <div className="w-0 h-5"/>
     </TreeViewContext.Provider>
   )
-}
+})

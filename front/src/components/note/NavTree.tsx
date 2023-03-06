@@ -1,46 +1,21 @@
-import {FC, memo, useCallback, useContext, useEffect, useMemo, useState} from "react";
+import {FC, memo, useCallback} from "react";
 import {NoteData} from "@/types/NoteData";
-import {TreeItem, TreeView} from "@/components";
+import {TreeView} from "@/components";
 
 export interface NavTreeProps {
   noteDataList: NoteData[],
-  selectedId: number
-  expendedIds: number[]
-
-  onSelectionChange(id: number): void
+  selectedNoteData: NoteData
+  onSelectionChange(data: NoteData): void
 }
 
-export const NavTree: FC<NavTreeProps> = ({noteDataList, selectedId, expendedIds, onSelectionChange}) => {
-  const handleSelectionChange = useCallback((id: number) => {
-    onSelectionChange?.(id)
-  }, [noteDataList])
-
+export const NavTree: FC<NavTreeProps> = memo(({noteDataList, selectedNoteData, onSelectionChange}) => {
+  const handleSelectionChange = useCallback((data: NoteData) => {
+    onSelectionChange?.(data)
+  }, [onSelectionChange])
 
   return (
     <div className="w-[250px] overflow-auto">
-      <TreeView expendedIds={expendedIds} onSelectionChange={handleSelectionChange} defaultSelectedId={selectedId}>
-        {
-          noteDataList.map(noteData => (<NavNote key={noteData.id} noteData={noteData}/>))
-        }
-      </TreeView>
+      <TreeView selectedData={selectedNoteData} onSelectionChange={handleSelectionChange} dataArr={noteDataList}/>
     </div>
   )
-}
-
-type NavNoteProps = {
-  noteData: NoteData,
-}
-
-const NavNote: FC<NavNoteProps> = ({noteData}) => {
-
-  return (
-    <TreeItem key={noteData.id}
-              label={noteData.name} id={noteData.id}>
-      {
-        noteData.children?.length ?
-          noteData.children.map(subNoteData => (
-            <NavNote key={noteData.id} noteData={subNoteData}/>)) : undefined
-      }
-    </TreeItem>
-  )
-}
+})

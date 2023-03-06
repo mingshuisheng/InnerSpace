@@ -24,8 +24,8 @@ export const deleteNote = (id: number) => {
   return del<NoteData>(`/note/${id}`)
 }
 
-export const getNoteDetail = (id: number) => {
-  return get<NoteData & {detail: string}>(`/note/detail/${id}`)
+export const getNoteContent = (id: number) => {
+  return get<NoteData & {content: string}>(`/note/detail/${id}`)
 }
 
 export const modifyNoteDetail = (id: number, noteDetail: string) => {

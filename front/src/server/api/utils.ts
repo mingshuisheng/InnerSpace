@@ -18,7 +18,7 @@ export const get = async <T = unknown>(url: string, params?: Record<string, any>
 
 export const post = async <T = unknown>(url: string, param?: Record<string, any>, headers?: HeadersInit) => {
   const init: RequestInit = {
-    method: "post",
+    method: "POST",
     headers: {
       ...headers,
       'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export const post = async <T = unknown>(url: string, param?: Record<string, any>
 
 export const put = async <T = unknown>(url: string, param?: Record<string, any>, headers?: HeadersInit) => {
   const init: RequestInit = {
-    method: "put",
+    method: "PUT",
     headers: {
       ...headers,
       'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const put = async <T = unknown>(url: string, param?: Record<string, any>,
 
 export const patch = async <T = unknown>(url: string, param?: Record<string, any>, headers?: HeadersInit) => {
   const init: RequestInit = {
-    method: "patch",
+    method: "PATCH",
     headers: {
       ...headers,
       'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ export const patch = async <T = unknown>(url: string, param?: Record<string, any
 
 export const del = async <T = unknown>(url: string, param?: Record<string, any>, headers?: HeadersInit) => {
   const init: RequestInit = {
-    method: "delete",
+    method: "DELETE",
     headers: {
       ...headers,
       'Content-Type': 'application/json'

@@ -1,8 +1,9 @@
 import {FC, PropsWithChildren, useCallback} from "react";
 import {NavTree} from "@/components/note/NavTree";
-import {NoteData} from "@/types/NoteData";
+import {NoteData, RootNoteData} from "@/types/NoteData";
 import {useRouter} from "next/router";
 import {Divider, Flex1Full} from "@/components";
+import {findSelectedData} from "@/utils/NoteUtils";
 
 export interface NoteLayoutProps extends PropsWithChildren {
   noteDataList: NoteData[]
@@ -10,22 +11,20 @@ export interface NoteLayoutProps extends PropsWithChildren {
 
 export const NoteLayout: FC<NoteLayoutProps> = ({children, noteDataList}) => {
   const router = useRouter();
-  const handlerTreeItemClick = useCallback((id: number) => {
-    const url = id === 0 ? "/note" : `/note/${id}`
+  const handlerTreeItemClick = useCallback((data: NoteData) => {
+    const url = data.id === 0 ? "/note" : `/note/${data.id}`
     router.push(url).then(null)
   }, [])
 
-  let selectedId = 0
-  let expendedIds: number[] = []
+  let selectedNoteData = RootNoteData
 
   if (router.query.noteId) {
-    selectedId = parseInt(router.query.noteId as string)
-    getExpendedIds(noteDataList, selectedId, expendedIds)
+    selectedNoteData = findSelectedData(noteDataList, parseInt(router.query.noteId as string))
   }
 
   return (
     <div className="flex gap-2 h-full">
-      <NavTree expendedIds={expendedIds} selectedId={selectedId} noteDataList={noteDataList}
+      <NavTree selectedNoteData={selectedNoteData} noteDataList={noteDataList}
                onSelectionChange={handlerTreeItemClick}/>
       <Divider/>
       <Flex1Full>
@@ -35,22 +34,4 @@ export const NoteLayout: FC<NoteLayoutProps> = ({children, noteDataList}) => {
       </Flex1Full>
     </div>
   )
-}
-
-function getExpendedIds(noteDataList: NoteData[], selectedId: number, expendedIds: number[]): boolean {
-  if (noteDataList.length <= 0) {
-    return false
-  }
-  if (noteDataList.find(item => item.id == selectedId)) {
-    return true
-  }
-
-  for (let i = 0; i < noteDataList.length; i++) {
-    if (noteDataList[i].children?.length && getExpendedIds(noteDataList[i].children || [], selectedId, expendedIds)) {
-      expendedIds.push(noteDataList[i].id)
-      return true
-    }
-  }
-
-  return false
 }

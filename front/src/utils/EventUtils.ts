@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "react";
+import {MutableRefObject, RefObject, useEffect, useRef} from "react";
 
 
 type TargetType = {
@@ -83,4 +83,23 @@ export function useLongPush<T extends HTMLElement>(onLongPush: () => void) {
   }, [ref.current, onLongPush])
 
   return ref
+}
+
+//接收一个函数作为参数，这个参数是一个函数，拦截默认的保存事件，并且调用传入的函数
+export const useOnSave = <T extends HTMLElement>(onSave: () => void) => {
+  useEffect(() => {
+    const save = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault()
+        onSave()
+      }
+      return false
+    }
+
+    document.addEventListener('keydown', save)
+    return () => {
+      document.removeEventListener('keydown', save)
+    }
+
+  }, [onSave])
 }

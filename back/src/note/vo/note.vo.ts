@@ -13,7 +13,7 @@ export class NoteVo {
   parentId: number
   name: string
   children?: NoteVo[]
-  detail: string
+  content: string
 }
 
 export function entityToVo(entity: Note): NoteVo {

@@ -1,6 +1,7 @@
 import type {AppProps} from 'next/app';
 import {FC, Suspense} from 'react';
 import '../styles/globals.css';
+import "react-markdown-editor-lite/lib/index.css";
 import {flowbiteTheme as theme} from '../theme';
 
 import {Flowbite, Spinner} from 'flowbite-react';
@@ -16,7 +17,7 @@ const navDataStart: NavData[] = [
   },
   {
     title: "笔记",
-    href: "/note",
+    href: "/note/0",
     matcher: "^/note/?\\d*"
   },
 ]

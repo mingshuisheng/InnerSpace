@@ -1,15 +1,17 @@
-import {createContext, useContext} from "react";
+import {createContext, FC, useContext} from "react";
+import {TreeData, TreeItemLabelProps} from "@/components/onion/TreeView/types";
+import {TreeItemLabel} from "@/components/onion/TreeView/TreeItemLabel";
 
 export interface TreeViewContextType {
-  selectedId: number
-  expendedIds: number[]
-  onChange(value: number): void
+  selectedTreeData: TreeData
+  treeItemLabel: FC<TreeItemLabelProps>
+  onItemClick: (data: TreeData) => void
 }
 
 export const TreeViewContext = createContext<TreeViewContextType>({
-  selectedId: -1,
-  expendedIds: [],
-  onChange: () => {}
+  selectedTreeData: {id: 0, name: ""},
+  treeItemLabel: TreeItemLabel,
+  onItemClick: () => {}
 })
 
 export const useTreeViewContext = () => useContext(TreeViewContext)

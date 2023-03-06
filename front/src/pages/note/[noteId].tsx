@@ -2,21 +2,25 @@ import {FC} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
 import {getNoteNavData} from "@/common/commonStaticProps";
 import {NoteData} from "@/types/NoteData";
+import {Head, Markdown} from "@/components";
+import {getNoteContent} from "@/server/api/note";
 
 type Props = {
   noteDataList: NoteData[],
-  noteId: string
+  noteData: NoteData & { content: string }
 }
 
 type Params = {
   noteId: string
 }
 
-const NoteDetail: FC<Props> = ({noteId}) => {
+const NoteDetail: FC<Props> = ({noteData}) => {
   return (
-    <div>
-      笔记详情页 {noteId}
-    </div>
+    <Head pageTitle={noteData.name}>
+      <div>
+        <Markdown>{noteData.content}</Markdown>
+      </div>
+    </Head>
   )
 }
 
@@ -35,10 +39,16 @@ export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
 
 
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
+  const noteNavData = getNoteNavData();
+  const noteData = await getNoteContent(parseInt(context.params?.noteId || "0"));
+  if(!noteData.content){
+    noteData.content = "无数据"
+  }
+
   return {
     props: {
-      noteDataList: await getNoteNavData(),
-      noteId: context.params?.noteId || "0"
+      noteDataList: await noteNavData,
+      noteData: noteData
     }
   }
 }

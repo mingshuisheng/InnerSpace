@@ -27,7 +27,11 @@ export class Note {
   deleteDate: Date
 }
 
-export const NoteNotFound = new Note()
+export const RootNote = new Note()
+RootNote.id = 0
+RootNote.name = "笔记主页"
+RootNote.noteDetail = "./note/root.md"
 
+export const NoteNotFound = new Note()
 NoteNotFound.id = -1
 NoteNotFound.name = "未找到"

@@ -1,13 +1,11 @@
 import {Injectable} from '@nestjs/common';
 import {CreateNoteDto} from './dto/create-note.dto';
 import {UpdateNoteDto} from './dto/update-note.dto';
-import {Note, NoteNotFound} from "../entity/note.entity";
+import {Note, NoteNotFound, RootNote} from "../entity/note.entity";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {entityToVo, NoteVo} from "./vo/note.vo";
 import {v4 as uuidv4} from 'uuid';
-// import fs from "fs";
-// import util from "util"
 
 const fs = require('fs');
 const util = require('util');
@@ -99,13 +97,7 @@ export class NoteService {
     return root;
   }
 
-  async changeDetail(id: number, noteDetail: string) {
-
-    //根据id查询note
-    const note = await this.noteRepository.findOneBy({id});
-    if (!note) {
-      return entityToVo(NoteNotFound)
-    }
+  async changeDetail(id: number, noteContent: string) {
 
     //文件夹名称
     const dirName = "./note";
@@ -115,6 +107,22 @@ export class NoteService {
     if (!fs.existsSync(dirName)) {
       await mkdir(dirName);
     }
+
+    //创建文件
+    const writeFile = util.promisify(fs.writeFile);
+
+    if(id === 0){
+      const name = "root.md"
+      await writeFile(`${dirName}/${name}`, noteContent, {encoding: "utf-8"});
+      return entityToVo(RootNote)
+    }
+
+    //根据id查询note
+    const note = await this.noteRepository.findOneBy({id});
+    if (!note) {
+      return entityToVo(NoteNotFound)
+    }
+
     let fileName = note.noteDetail
     if (fileName === "") {
       //生成uuid，并且去除中间的-
@@ -123,10 +131,7 @@ export class NoteService {
       fileName = `${dirName}/${uuid}.md`;
     }
 
-
-    //创建文件
-    const writeFile = util.promisify(fs.writeFile);
-    await writeFile(fileName, noteDetail, {encoding: "utf-8"});
+    await writeFile(fileName, noteContent, {encoding: "utf-8"});
 
     //修改note，并存入数据库
     note.noteDetail = fileName;
@@ -135,19 +140,30 @@ export class NoteService {
   }
 
   async getDetail(id: number) {
-    //查询note
-    const note = await this.noteRepository.findOneBy({id});
-    if (!note) {
-      return entityToVo(NoteNotFound)
+    let note = RootNote
+    if (id === 0) {
+      if (!fs.existsSync(RootNote.noteDetail)) {
+        const writeFile = util.promisify(fs.writeFile);
+        await writeFile(RootNote.noteDetail, "", {encoding: "utf-8"});
+      }
+    } else {
+      //查询note
+      note = await this.noteRepository.findOneBy({id});
+      if (!note) {
+        return entityToVo(NoteNotFound)
+      }
+
+      //如果文件不存在，返回空字符串
+      if (!fs.existsSync(note.noteDetail)) {
+        return entityToVo(note);
+      }
     }
+    //创建vo
+    let noteVo = entityToVo(note);
 
     //读取文件
     const readFile = util.promisify(fs.readFile);
-    const data = await readFile(note.noteDetail, {encoding: "utf-8"});
-
-    //创建vo
-    const noteVo = entityToVo(note);
-    noteVo.detail = data;
+    noteVo.content = await readFile(note.noteDetail, {encoding: "utf-8"});
     return noteVo;
   }
 }
