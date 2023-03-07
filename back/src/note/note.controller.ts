@@ -7,15 +7,15 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  CacheInterceptor, CacheKey
+  CacheInterceptor, CacheKey, UseGuards
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import {PatchNoteDetailDto} from "./dto/patch-note-detail.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @Controller('note')
-
 export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
@@ -56,6 +56,7 @@ export class NoteController {
     return this.noteService.changeDetail(+id, patchNoteDetailDto.noteDetail);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/detail/:id')
   getDetail(@Param('id') id: string) {
     return this.noteService.getDetail(+id);

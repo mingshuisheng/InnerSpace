@@ -6,8 +6,6 @@ import {
   useNoteDataArr,
   useSelectedNoteData
 } from "@/components/admin/note/store";
-import {useNoteId} from "@/utils/PathVariable";
-import {findSelectedData} from "@/utils/NoteUtils";
 import {NoteTreeItemLabel} from "@/components/admin/note/NoteTreeItemLabel";
 import {ActionButtonGroup} from "@/components/admin/note/ActionButtonGroup";
 
@@ -16,13 +14,9 @@ export const NoteTree: FC = memo(() => {
   const dataArr = useNoteDataArr()
 
   const selectedData = useSelectedNoteData()
-  const noteId = useNoteId();
 
   useEffect(() => {
-    (async function () {
-      await reloadNoteDataList()
-      await setSelectNoteData(findSelectedData(dataArr, noteId)).then(null)
-    })()
+    reloadNoteDataList().then()
   }, [])
 
   const handlerAdd = useCallback(() => {

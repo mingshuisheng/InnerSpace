@@ -3,6 +3,8 @@ import {AppController} from './app.controller';
 import {NoteModule} from './note/note.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Note} from "./entity/note.entity";
+import {AuthModule} from './auth/auth.module';
+import {UsersModule} from './users/users.module';
 
 @Module({
   imports: [
@@ -20,9 +22,12 @@ import {Note} from "./entity/note.entity";
       entities: [Note],
       synchronize: true,
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [],
+  exports:[AuthModule]
 })
 export class AppModule {
 }

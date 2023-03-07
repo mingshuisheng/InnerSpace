@@ -24,7 +24,7 @@ const selectedNoteDataSelector = (state: NoteDataAsideStore) => state.selectedNo
 export const useSelectedNoteData = () => noteDataAsideStore(selectedNoteDataSelector)
 export const setSelectNoteData = async (noteData: NoteData) => {
   noteDataAsideStore.setState({selectedNoteData: noteData})
-  const newNoteData = await getNoteContent(noteData.id);
+  const newNoteData = await getNoteContent(noteData.id)
   setNoteContent(newNoteData.content || "")
   setInputContent(newNoteData.content || "")
 }
