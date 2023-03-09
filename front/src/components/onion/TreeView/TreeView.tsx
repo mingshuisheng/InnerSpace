@@ -1,6 +1,6 @@
-import {FC, memo, useCallback} from "react";
+import {FC, memo, useCallback, useMemo} from "react";
 import {useAutoAnimate} from '@formkit/auto-animate/react'
-import {TreeViewContext} from "./TreeViewContext";
+import {TreeViewContext, TreeViewContextType} from "./TreeViewContext";
 import {TreeData, TreeItemLabelProps} from "./types";
 import {TreeItem} from "./TreeItem";
 import {TreeItemLabel} from "@/components/onion/TreeView/TreeItemLabel";
@@ -26,12 +26,10 @@ export const TreeView: FC<TreeViewProps> = memo(({
     onSelectionChange?.(data)
   }, [onSelectionChange])
 
-  if (!selectedData) {
-    selectedData = dataArr[0]
-  }
+  const context = useMemo<TreeViewContextType>(() => ({selectedTreeData: selectedData || dataArr[0], onItemClick: handlerItemClick, treeItemLabel}), [selectedData, handlerItemClick, treeItemLabel])
 
   return (
-    <TreeViewContext.Provider value={{selectedTreeData: selectedData, onItemClick: handlerItemClick, treeItemLabel}}>
+    <TreeViewContext.Provider value={context}>
       <div ref={parent} className="flex flex-col">
         {
           dataArr.map(data => (

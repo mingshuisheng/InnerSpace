@@ -1,9 +1,8 @@
 import {FC} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
-import {getNoteNavData} from "@/common/commonStaticProps";
 import {NoteData} from "@/types/NoteData";
 import {Head, Markdown, NoteLayout} from "@/components";
-import {getNoteContent} from "@/server/api/note";
+import {api} from "@/server/api";
 
 type Props = {
   noteDataList: NoteData[],
@@ -26,6 +25,14 @@ const NoteDetail: FC<Props> = ({noteData, noteDataList}) => {
   )
 }
 
+const getNoteNavData = async () => {
+  const noteTree = await api.getNoteTree();
+  let noteDataList: NoteData[] = []
+  if (noteTree?.children) {
+    noteDataList = noteTree.children
+  }
+  return [{id: 0, name: "笔记主页"},...noteDataList]
+}
 
 export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
   const list = await getNoteNavData();
@@ -42,7 +49,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
 
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
   const noteNavData = getNoteNavData();
-  const noteData = await getNoteContent(parseInt(context.params?.noteId || "0"));
+  const noteData = await api.getNoteContent(parseInt(context.params?.noteId || "0"));
   if (!noteData.content) {
     noteData.content = "无数据"
   }

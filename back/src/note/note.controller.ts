@@ -19,6 +19,7 @@ import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createNoteDto: CreateNoteDto) {
     return this.noteService.create(createNoteDto);
@@ -41,23 +42,25 @@ export class NoteController {
     return this.noteService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
     return this.noteService.update(+id, updateNoteDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.noteService.remove(+id);
   }
 
-  @Patch('/detail/:id')
-  changeDetail(@Param('id') id: string, @Body() patchNoteDetailDto: PatchNoteDetailDto) {
-    return this.noteService.changeDetail(+id, patchNoteDetailDto.noteDetail);
+  @UseGuards(JwtAuthGuard)
+  @Patch('/content/:id')
+  changeDetail(@Param('id') id: string, @Body() patchNoteContentDto: PatchNoteDetailDto) {
+    return this.noteService.changeContent(+id, patchNoteContentDto.noteContent);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/detail/:id')
+  @Get('/content/:id')
   getDetail(@Param('id') id: string) {
     return this.noteService.getDetail(+id);
   }

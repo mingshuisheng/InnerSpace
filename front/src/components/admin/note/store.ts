@@ -1,7 +1,8 @@
 import {create} from 'zustand'
-import {getNoteTree} from "@/server/api";
+import {api} from "@/server/api";
 import {NoteData, NullNoteData, RootNoteData} from "@/types/NoteData";
-import {addNote, deleteNote, getNoteContent, modifyNote, modifyNoteDetail} from "@/server/api/note";
+
+const {getNoteTree, addNote, modifyNote, deleteNote, getNoteContent, modifyNoteContent} = api
 
 // 侧边栏的数据
 interface NoteDataAsideStore {
@@ -120,11 +121,14 @@ const noteContentStore = create<NoteContentStore>(() => ({
 }))
 const inputContentSelector = (state: NoteContentStore) => state.inputContent
 export const useInputContent = () => noteContentStore(inputContentSelector)
-export const setNoteContent = (noteContent: string) => noteContentStore.setState({noteContent, inputContent: noteContent})
+export const setNoteContent = (noteContent: string) => noteContentStore.setState({
+  noteContent,
+  inputContent: noteContent
+})
 export const setInputContent = (inputContent: string) => noteContentStore.setState({inputContent})
 export const saveNoteContent = async () => {
   const inputContent = noteContentStore.getState().inputContent
   const id = noteDataAsideStore.getState().selectedNoteData.id
-  await modifyNoteDetail(id, inputContent)
+  await modifyNoteContent(id, inputContent)
   setNoteContent(noteContentStore.getState().inputContent)
 }

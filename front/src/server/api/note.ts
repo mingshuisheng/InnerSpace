@@ -1,35 +1,21 @@
-import {del, get, patch, post} from "./utils";
 import {NoteData} from "@/types/NoteData";
+import {BuildApiParams} from "@/utils/NetworkUtils";
 
-
-export const getNoteTree = () => {
-  return get<NoteData>("/note/tree")
+export type NoteApiType = {
+  getNoteTree: () => Promise<NoteData>
+  addNote: (parentId: number, name: string) => Promise<NoteData>
+  modifyNote: (id: number, name: string, parentId?: number) => Promise<NoteData>
+  deleteNote: (id: number) => Promise<NoteData>
+  getNoteContent: (id: number) => Promise<NoteData & { content: string }>
+  modifyNoteContent: (id: number, noteDetail: string) => Promise<NoteData>
 }
 
-export const addNote = (parentId: number, name: string) => {
-  return post<NoteData>("/note", {
-    parentId,
-    name
-  })
+export const NoteApi: BuildApiParams<NoteApiType> = {
+  getNoteTree: fetra => () => fetra.get<NoteData>("/note/tree"),
+  addNote: fetra => (parentId, name) => fetra.post<NoteData>("/note", {parentId, name}),
+  modifyNote: fetra => (id, name, parentId) => fetra.patch<NoteData>(`/note/${id}`, {name, parentId}),
+  deleteNote: fetra => id => fetra.delete<NoteData>(`/note/${id}`),
+  getNoteContent: fetra => id => fetra.get<NoteData & { content: string }>(`/note/content/${id}`),
+  modifyNoteContent: fetra => (id, noteContent) => fetra.patch<NoteData>(`/note/content/${id}`, {noteContent})
 }
 
-export const modifyNote = (id: number, name: string, parentId?: number) => {
-  return patch<NoteData>(`/note/${id}`, {
-    name,
-    parentId
-  })
-}
-
-export const deleteNote = (id: number) => {
-  return del<NoteData>(`/note/${id}`)
-}
-
-export const getNoteContent = (id: number) => {
-  return get<NoteData & {content: string}>(`/note/detail/${id}`)
-}
-
-export const modifyNoteDetail = (id: number, noteDetail: string) => {
-  return patch<NoteData>(`/note/detail/${id}`, {
-    noteDetail
-  })
-}

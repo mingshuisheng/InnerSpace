@@ -33,11 +33,11 @@ const navDataEnd: NavData[] = [
     href: "/more",
     matcher: "^/more$"
   },
-  {
-    title: "管理页面",
-    href: "/admin/note",
-    matcher: "^/admin/note$"
-  },
+  // {
+  //   title: "管理页面",
+  //   href: "/admin/note",
+  //   matcher: "^/admin/note$"
+  // },
 ]
 
 const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {
@@ -52,11 +52,13 @@ const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {
       }
     >
       <Flowbite theme={{theme}}>
-        <Layout navDataList={localNavData}>
-          {
-            <Component {...pageProps} />
-          }
-        </Layout>
+        {
+          router.pathname.startsWith("/admin") ?
+            <Component {...pageProps} /> :
+            <Layout navDataList={localNavData}>
+              <Component {...pageProps} />
+            </Layout>
+        }
       </Flowbite>
     </Suspense>
   );

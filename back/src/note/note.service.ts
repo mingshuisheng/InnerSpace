@@ -97,7 +97,7 @@ export class NoteService {
     return root;
   }
 
-  async changeDetail(id: number, noteContent: string) {
+  async changeContent(id: number, noteContent: string) {
 
     //文件夹名称
     const dirName = "./note";
