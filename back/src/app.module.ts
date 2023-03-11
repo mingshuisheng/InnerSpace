@@ -1,10 +1,11 @@
 import {CacheModule, Module} from '@nestjs/common';
-import {AppController} from './app.controller';
 import {NoteModule} from './note/note.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Note} from "./entity/note.entity";
 import {AuthModule} from './auth/auth.module';
 import {UsersModule} from './users/users.module';
+import {User} from "./entity/user.entity";
+import {HashModule} from "./hash/hash.module";
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import {UsersModule} from './users/users.module';
       username: 'root',
       password: 'root',
       database: 'inner_space',
-      entities: [Note],
+      entities: [Note, User],
       synchronize: true,
     }),
     AuthModule,
     UsersModule,
+    HashModule
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [],
   exports:[AuthModule]
 })

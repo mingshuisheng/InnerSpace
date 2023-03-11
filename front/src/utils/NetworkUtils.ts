@@ -62,3 +62,16 @@ const createWrapFetraFunction = (fun: Fetcher) => {
     return data as T
   }
 }
+
+export const getUrlByInput = (input: RequestInfo | URL) => {
+  if (typeof input === "string") {
+    return input
+  }else if(input instanceof URL){
+    return input.toString()
+  }
+  return input.url
+}
+
+export const concatUrl = (baseUrl: string, url: string) => {
+  return `${baseUrl.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+}

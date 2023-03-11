@@ -1,32 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import {JwtService} from "@nestjs/jwt";
-
-export type User = any;
+import {Injectable, OnApplicationBootstrap} from '@nestjs/common';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {User} from "../entity/user.entity";
+import {toUserVo, UserVo} from "./vo/user.vo";
+import {HashService} from "../hash/hash.service";
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnApplicationBootstrap {
 
-  constructor() {
+  constructor(@InjectRepository(User) private userRepository: Repository<User>, private hashService: HashService) {
+
   }
 
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async onApplicationBootstrap() {
+    if (await this.userRepository.count() > 0) {
+      return;
+    }
+    const user = new User()
+    user.name = 'admin'
+    user.password = 'admin'
+    await this.save(user)
   }
 
-  async findById(id: number): Promise<User | undefined> {
-    return this.users.find(user => user.userId === id);
+  async findOneUser(name: string): Promise<User> {
+    return await this.userRepository.findOneBy({name: name})
+  }
+
+  async findOne(username: string): Promise<UserVo | undefined> {
+    const user = await this.userRepository.findOneBy({name: username})
+    return toUserVo(user);
+  }
+
+  async findById(id: number): Promise<UserVo | undefined> {
+    const user = await this.userRepository.findOneBy({id: id})
+    return toUserVo(user)
+  }
+
+  async save(user: User): Promise<UserVo> {
+    user.password = await this.hashService.hash(user.password)
+    return toUserVo(await this.userRepository.save(user))
   }
 }

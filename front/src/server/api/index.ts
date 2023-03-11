@@ -1,8 +1,8 @@
-import {buildApi, BuildApiParams, BuildApiReturn} from "@/utils/NetworkUtils";
+import {buildApi, BuildApiParams, BuildApiReturn, concatUrl} from "@/utils/NetworkUtils";
 import {NoteApi, NoteApiType} from "@/server/api/note";
 import {getAccessToken, getRefreshToken, setToken} from "@/server/api/TokenManager";
 import {newFetra} from "@/utils/fetra";
-import {authApi, AuthApiType} from "@/server/api/auth";
+import {authApi, AuthApiType, loginUrl} from "@/server/api/auth";
 
 type TotalApiType = NoteApiType & AuthApiType
 type ApiType = BuildApiReturn<TotalApiType>
@@ -29,3 +29,5 @@ const createFetra = () => {
 
 export const fetra = createFetra()
 export const api: ApiType = buildApi<TotalApiType>(totalApiParams, fetra)
+
+export const isLoginUrl = (url: string) => url === loginUrl || concatUrl(getBaseUrl(), loginUrl) === url

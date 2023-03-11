@@ -104,7 +104,7 @@ export const useDeleteLayerNoteData = () => deleteLayerStore(deleteLayerNoteData
 export const openDeleteLayer = (noteData: NoteData) => deleteLayerStore.setState({open: true, noteData})
 export const closeDeleteLayer = () => deleteLayerStore.setState({open: false, noteData: NullNoteData})
 export const submitDeleteLayer = async () => {
-  await deleteNote(addLayerStore.getState().noteData.id)
+  await deleteNote(deleteLayerStore.getState().noteData.id)
   await reloadNoteDataList()
   closeDeleteLayer()
 }

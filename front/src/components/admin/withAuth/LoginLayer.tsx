@@ -1,8 +1,8 @@
-import {ChangeEvent, FC, memo, useCallback} from "react";
+import {ChangeEvent, FC, FormEvent, memo, useCallback} from "react";
 import {Modal} from "@/components";
 import {
   setPassword,
-  setUserName, submitLogin, useLoginError,
+  setUserName, submitLogin, useLoginErrorText,
   useLoginLayerOpened,
   usePassword,
   useUserName
@@ -13,18 +13,22 @@ export const LoginLayer: FC = memo(() => {
   const isOpen = useLoginLayerOpened()
   const userName = useUserName()
   const password = usePassword()
-  const loginError = useLoginError()
+  const loginErrorText = useLoginErrorText()
   const handleUserNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value), [setUserName]);
   const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value), [setPassword]);
+  const handleInput = useCallback((e: FormEvent<HTMLInputElement>) => {
+    //如果是回车键，就提交表单
+    if (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.key === 'Enter') {
+      e.preventDefault()
+      submitLogin().then()
+    }
+  }, [])
   return (
     <Modal show={isOpen}>
       <Modal.Body>
         <div className="w-0 h-2"/>
         <h1 className="text-2xl">管理员登录</h1>
-        {
-          !loginError? "":
-            <div className="text-red-600">登录失败</div>
-        }
+        <div className="text-red-600">{loginErrorText}</div>
         <div>
           <div className="mb-2 block">
             <Label
@@ -38,6 +42,7 @@ export const LoginLayer: FC = memo(() => {
             required={true}
             value={userName}
             onChange={handleUserNameChange}
+            onKeyDown={handleInput}
           />
           <div>
             <div className="mb-2 block">
@@ -53,6 +58,7 @@ export const LoginLayer: FC = memo(() => {
               required={true}
               value={password}
               onChange={handlePasswordChange}
+              onKeyDown={handleInput}
             />
           </div>
         </div>

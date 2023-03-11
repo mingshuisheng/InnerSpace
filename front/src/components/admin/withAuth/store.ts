@@ -1,6 +1,8 @@
 import {create} from 'zustand'
-import {api, fetra} from "@/server/api";
+import {api, fetra, isLoginUrl} from "@/server/api";
 import {getRefreshToken, setToken, Token} from "@/server/api/TokenManager";
+import {getUrlByInput} from "@/utils/NetworkUtils";
+import {isResponseError} from "@/server/api/ResponseError";
 
 const {login} = api
 
@@ -9,7 +11,7 @@ interface AuthStore {
   userName: string
   password: string
   loginSuccess: boolean
-  loginError: boolean
+  loginErrorText: string
 }
 
 const authStore = create<AuthStore>(() => ({
@@ -17,7 +19,7 @@ const authStore = create<AuthStore>(() => ({
   userName: "",
   password: "",
   loginSuccess: false,
-  loginError: false
+  loginErrorText: ""
 }))
 
 const loginLayerOpenedSelector = (state: AuthStore) => state.loginLayerOpened
@@ -30,28 +32,31 @@ export const usePassword = () => authStore(passwordSelector)
 export const setPassword = (password: string) => authStore.setState({password})
 // const loginSuccessSelector = (state: AuthStore) => state.loginSuccess
 // export const useLoginSuccess = () => authStore(loginSuccessSelector)
-const loginErrorSelector = (state: AuthStore) => state.loginError
-export const useLoginError = () => authStore(loginErrorSelector)
+const loginErrorTextSelector = (state: AuthStore) => state.loginErrorText
+export const useLoginErrorText = () => authStore(loginErrorTextSelector)
 export const submitLogin = async () => {
   const username = authStore.getState().userName;
   const password = authStore.getState().password;
-  const res = await login(username, password);
-  if (isTokenError(res)) {
-    authStore.setState({loginError: true})
-  } else {
-    setToken(res.accessToken, res.refreshToken)
-    authStore.setState({loginLayerOpened: false, loginSuccess: true, loginError: false})
+  //如果用户名或密码为空，则直接返回
+  if (!username || !password) {
+    authStore.setState({loginErrorText: "用户名或密码不能为空"})
+    return
+  }
+  try {
+    const res = await login(username, password);
+    if (isResponseError(res)) {
+      authStore.setState({loginErrorText: "用户名或密码错误"})
+    } else {
+      setToken(res.accessToken, res.refreshToken)
+      authStore.setState({loginLayerOpened: false, loginSuccess: true, loginErrorText: ""})
+    }
+  } catch (e) {
+    authStore.setState({loginErrorText: "无法连接到服务器"})
   }
 }
 
-type TokenError = { error: string }
-
-function isTokenError(resp: Required<Token> | { error: string }): resp is TokenError {
-  return (resp as { error: string }).error !== undefined
-}
-
 fetra.beforeResponse(async (response, input, init, fetcher) => {
-  if (response.status === 401) {
+  if (response.status === 401 && !isLoginUrl(getUrlByInput(input))) {
     if (getRefreshToken()) {
       const refreshResponse = await fetcher("/auth/refresh", {
         method: "POST",

@@ -28,6 +28,7 @@ const Home: FC<Props> = () => {
             前后端皆通，产品也精巧。<br/>
             难得有闲暇，常为需求忙。<br/>
             若问薪水高，不如自己猜。<br/>
+            <div className="w-full text-right">-- by new bing</div>
           </div>
         </div>
         <MiniGame/>
