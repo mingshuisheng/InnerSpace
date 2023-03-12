@@ -1,11 +1,12 @@
 import {CacheModule, Module} from '@nestjs/common';
 import {NoteModule} from './note/note.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {Note} from "./entity/note.entity";
 import {AuthModule} from './auth/auth.module';
 import {UsersModule} from './users/users.module';
-import {User} from "./entity/user.entity";
 import {HashModule} from "./hash/hash.module";
+import {ConfigModule, ConfigService} from "@nestjs/config";
+import configuration from "./config/configuration";
+import {TypeOrmConfigService} from "./config/TypeOrmConfigService";
 
 @Module({
   imports: [
@@ -13,15 +14,14 @@ import {HashModule} from "./hash/hash.module";
       isGlobal: true
     }),
     NoteModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '192.168.2.170',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'inner_space',
-      entities: [Note, User],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration]
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: TypeOrmConfigService
     }),
     AuthModule,
     UsersModule,
@@ -29,7 +29,7 @@ import {HashModule} from "./hash/hash.module";
   ],
   controllers: [],
   providers: [],
-  exports:[AuthModule]
+  exports: [AuthModule]
 })
 export class AppModule {
 }

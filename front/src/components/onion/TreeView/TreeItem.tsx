@@ -21,13 +21,13 @@ export const TreeItem: FC<TreeItemProps> = ({data}) => {
     if (data !== selectedTreeData) {
       onItemClick(data)
     }
-  }, [data, selectedTreeData,onItemClick])
+  }, [data, selectedTreeData, onItemClick])
 
   const hasChildren = !!data.children?.length
 
-  const iconClass = "h-5 w-5"
   const onClass = 'bg-gray-100 text-blue-600 dark:bg-gray-800 dark:text-blue-500'
-  const offClass = 'text-gray-500 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300 hover:cursor-pointer'
+  const offClass = 'text-gray-500 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300'
+  const handleIconClick = useCallback(() => hasChildren && setIsOpen(open => !open), [hasChildren, setIsOpen]);
   return (
     <div ref={parent} className="flex flex-col">
       <div
@@ -36,15 +36,14 @@ export const TreeItem: FC<TreeItemProps> = ({data}) => {
           [offClass]: id !== selectedId,
         })}
       >
-        {
-          !hasChildren ? <div className={iconClass}/> :
-            !isOpen ?
-              <HiChevronRight onClick={() => setIsOpen(open => !open)} className={classNames(iconClass, "hover:cursor-pointer")}/> :
-              <HiChevronDown onClick={() => setIsOpen(open => !open)} className={classNames(iconClass, "hover:cursor-pointer")}/>
-        }
+        <div onClick={handleIconClick}
+             className={classNames("h-5 w-5", {"invisible": !hasChildren, ["hover:cursor-pointer"]: hasChildren})}>
+          {!isOpen ? <HiChevronRight/> : <HiChevronDown/>}
+        </div>
         <div onClick={handleClick} className={classNames("whitespace-nowrap box-border", {
           ["pr-5"]: !hasChildren,
-          ["pr-2"]: hasChildren
+          ["pr-2"]: hasChildren,
+          ["hover:cursor-pointer"]: id !== selectedId
         })}>
           <Label data={data}/>
         </div>
