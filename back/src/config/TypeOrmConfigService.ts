@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import {DatabaseConfig, databaseConfigName} from "./DatabaseConfig";
+import {DatabaseConfig, databaseConfigName} from "./database.config";
 import {Note} from "../entity/note.entity";
 import {User} from "../entity/user.entity";
 

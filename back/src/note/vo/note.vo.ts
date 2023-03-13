@@ -2,11 +2,12 @@ import { Note } from '../../entity/note.entity'
 
 export class NoteVo {
 
-  constructor(id: number, parentId: number,name: string) {
+  constructor(id: number, parentId: number,name: string, content: string = "") {
     this.id = id
     this.parentId = parentId
     this.name = name
     this.children = []
+    this.content = content
   }
 
   id: number
@@ -16,6 +17,6 @@ export class NoteVo {
   content: string
 }
 
-export function entityToVo(entity: Note): NoteVo {
-  return new NoteVo(entity.id, entity.parentId, entity.name)
+export function entityToVo(entity: Note, content: string = ""): NoteVo {
+  return new NoteVo(entity.id, entity.parentId, entity.name, content)
 }

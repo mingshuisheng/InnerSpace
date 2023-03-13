@@ -1,4 +1,10 @@
-import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity, PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 
 @Entity("tb_note")
 export class Note {
@@ -8,14 +14,14 @@ export class Note {
   @Column()
   name: string
 
-  @Column({default: 0})
-  parentId: number
+  @Column({default: null})
+  parentId: number | null
 
-  @Column({default:"", type: "varchar", length: "100"})
+  @Column({default: "", type: "varchar", length: "100"})
   treeId: string
 
-  @Column({default:"", type: "varchar", length: "100"})
-  noteDetail: string
+  @Column({default: "", type: "varchar", length: "100"})
+  noteFileName: string
 
   @CreateDateColumn()
   createDate: Date
@@ -27,10 +33,10 @@ export class Note {
   deleteDate: Date
 }
 
-export const RootNote = new Note()
-RootNote.id = 0
-RootNote.name = "笔记主页"
-RootNote.noteDetail = "./note/root.md"
+// export const RootNote = new Note()
+// RootNote.id = 0
+// RootNote.treeId = "0"
+// RootNote.name = "笔记主页"
 
 export const NoteNotFound = new Note()
 NoteNotFound.id = -1

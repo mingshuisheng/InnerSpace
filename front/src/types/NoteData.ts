@@ -5,7 +5,7 @@ export type NoteData = {
 }
 
 export const RootNoteData: NoteData = {
-  id: 0,
+  id: 1,
   name: "笔记主页",
 }
 

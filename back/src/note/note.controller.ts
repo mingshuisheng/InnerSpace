@@ -32,15 +32,6 @@ export class NoteController {
     return this.noteService.buildTree();
   }
 
-  @Get()
-  findAll() {
-    return this.noteService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.noteService.findOne(+id);
-  }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -62,6 +53,6 @@ export class NoteController {
 
   @Get('/content/:id')
   getDetail(@Param('id') id: string) {
-    return this.noteService.getDetail(+id);
+    return this.noteService.getContent(+id);
   }
 }

@@ -5,9 +5,10 @@ import "react-markdown-editor-lite/lib/index.css";
 import {flowbiteTheme as theme} from '../theme';
 
 import {Flowbite, Spinner} from 'flowbite-react';
-import {Layout, NoteLayout} from "@/components";
+import {Layout} from "@/components";
 import {NavData} from "@/types/NavData";
 import {useRouter} from "next/router";
+import {RootNoteData} from "@/types/NoteData";
 
 const navDataStart: NavData[] = [
   {
@@ -17,7 +18,7 @@ const navDataStart: NavData[] = [
   },
   {
     title: "笔记",
-    href: "/note/0",
+    href: `/note/${RootNoteData.id}`,
     matcher: "^/note"
   },
 ]
@@ -33,11 +34,6 @@ const navDataEnd: NavData[] = [
     href: "/more",
     matcher: "^/more$"
   },
-  // {
-  //   title: "管理页面",
-  //   href: "/admin/note",
-  //   matcher: "^/admin/note$"
-  // },
 ]
 
 const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {

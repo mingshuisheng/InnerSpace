@@ -1,8 +1,8 @@
-import {FC, memo, useCallback, useEffect} from "react";
-import {RootNoteData} from "@/types/NoteData";
+import {FC, memo, useCallback} from "react";
+import {NullNoteData} from "@/types/NoteData";
 import {TreeView} from "@/components";
 import {
-  addNoteData, reloadNoteDataList, setSelectNoteData,
+  addNoteData, setSelectNoteData,
   useNoteDataArr,
   useSelectedNoteData
 } from "@/components/admin/note/store";
@@ -15,12 +15,8 @@ export const NoteTree: FC = memo(() => {
 
   const selectedData = useSelectedNoteData()
 
-  useEffect(() => {
-    reloadNoteDataList().then()
-  }, [])
-
   const handlerAdd = useCallback(() => {
-    addNoteData(RootNoteData)
+    addNoteData(NullNoteData)
   }, [])
 
   return (

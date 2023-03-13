@@ -11,13 +11,12 @@ interface NoteDataAsideStore {
 }
 
 const noteDataAsideStore = create<NoteDataAsideStore>(() => ({
-  noteDataArr: [RootNoteData],
+  noteDataArr: [],
   selectedNoteData: RootNoteData
 }))
 export const reloadNoteDataList = async () => {
   const data = await getNoteTree()
-  const children = data.children || [];
-  noteDataAsideStore.setState({noteDataArr: [RootNoteData, ...children]})
+  noteDataAsideStore.setState({noteDataArr: data})
 }
 const noteDataArrSelector = (state: NoteDataAsideStore) => state.noteDataArr
 export const useNoteDataArr = () => noteDataAsideStore(noteDataArrSelector)
@@ -53,7 +52,8 @@ export const setAddLayerInputValue = (inputValue: string) => addLayerStore.setSt
 export const openAddLayer = (noteData: NoteData) => addLayerStore.setState({open: true, inputValue: "", noteData})
 export const closeAddLayer = () => addLayerStore.setState({open: false, noteData: NullNoteData})
 export const submitAddLayer = async () => {
-  await addNote(addLayerStore.getState().noteData.id, addLayerStore.getState().inputValue)
+  const parentId = addLayerStore.getState().noteData.id;
+  await addNote(parentId === NullNoteData.id ? null : parentId, addLayerStore.getState().inputValue)
   await reloadNoteDataList()
   closeAddLayer()
 }

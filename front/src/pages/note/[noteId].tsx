@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
-import {NoteData} from "@/types/NoteData";
+import {NoteData, RootNoteData} from "@/types/NoteData";
 import {Head, Markdown, NoteLayout} from "@/components";
 import {api} from "@/server/api";
 
@@ -31,7 +31,7 @@ const getNoteNavData = async () => {
   if (noteTree?.children) {
     noteDataList = noteTree.children
   }
-  return [{id: 0, name: "笔记主页"},...noteDataList]
+  return [RootNoteData,...noteDataList]
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
