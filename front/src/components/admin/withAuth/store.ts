@@ -30,8 +30,6 @@ export const setUserName = (userName: string) => authStore.setState({userName})
 const passwordSelector = (state: AuthStore) => state.password
 export const usePassword = () => authStore(passwordSelector)
 export const setPassword = (password: string) => authStore.setState({password})
-// const loginSuccessSelector = (state: AuthStore) => state.loginSuccess
-// export const useLoginSuccess = () => authStore(loginSuccessSelector)
 const loginErrorTextSelector = (state: AuthStore) => state.loginErrorText
 export const useLoginErrorText = () => authStore(loginErrorTextSelector)
 export const submitLogin = async () => {

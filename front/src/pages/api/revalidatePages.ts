@@ -14,9 +14,10 @@ export default bePostHandler<Data>(async (req, res) => {
       const result = (await api.checkToken(token)) as unknown as {isValid: boolean};
       if(result.isValid){
         NextUtils.revalidatePages(req.body.path, res).then()
+        res.status(200).end()
+        return
       }
     }
   }
-  res.status(200);
-  res.json({success: true})
+  res.status(401).end()
 })
