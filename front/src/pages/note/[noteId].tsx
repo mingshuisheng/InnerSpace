@@ -25,13 +25,8 @@ const NoteDetail: FC<Props> = ({noteData, noteDataList}) => {
   )
 }
 
-const getNoteNavData = async () => {
-  const noteTree = await api.getNoteTree();
-  let noteDataList: NoteData[] = []
-  if (noteTree?.children) {
-    noteDataList = noteTree.children
-  }
-  return [RootNoteData,...noteDataList]
+const getNoteNavData = () => {
+  return api.getNoteTree();
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {

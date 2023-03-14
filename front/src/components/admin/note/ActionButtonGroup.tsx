@@ -21,13 +21,13 @@ export const ActionButtonGroup: FC<ActionButtonGroupProps> = memo(({onAdd, onEdi
     clickFunArr.push(handler)
   }
 
-  const handlerAdd = createClickFun(onAdd)
+  const handlerAdd = useClickFun(onAdd)
   !!onAdd && fillArr(MdAdd, handlerAdd)
 
-  const handlerEdit = createClickFun(onEdit)
+  const handlerEdit = useClickFun(onEdit)
   !!onEdit && fillArr(MdEdit, handlerEdit)
 
-  const handlerDelete = createClickFun(onDelete)
+  const handlerDelete = useClickFun(onDelete)
   !!onDelete && fillArr(MdDelete, handlerDelete)
 
   let sizeClass = "w-5 h-5"
@@ -50,7 +50,9 @@ export const ActionButtonGroup: FC<ActionButtonGroupProps> = memo(({onAdd, onEdi
   )
 })
 
-const createClickFun = (fun?: () => void) => {
+ActionButtonGroup.displayName = "ActionButtonGroup"
+
+const useClickFun = (fun?: () => void) => {
   return useCallback<ClickHandler>((event) => {
     event.stopPropagation()
     fun?.()

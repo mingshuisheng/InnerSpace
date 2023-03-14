@@ -29,3 +29,5 @@ export const NoteTree: FC = memo(() => {
     </div>
   )
 })
+
+NoteTree.displayName = "NoteTree"

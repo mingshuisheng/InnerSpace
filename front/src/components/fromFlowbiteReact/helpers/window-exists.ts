@@ -1,1 +1,3 @@
-export default (): boolean => typeof window !== 'undefined';
+export default function windowExists(): boolean {
+  return typeof window !== 'undefined';
+}

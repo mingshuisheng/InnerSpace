@@ -17,3 +17,5 @@ export const NoteTreeItemLabel: TreeItemLabelComponent = memo(({data}) => {
     </div>
   )
 })
+
+NoteTreeItemLabel.displayName = "NoteTreeItemLabel"

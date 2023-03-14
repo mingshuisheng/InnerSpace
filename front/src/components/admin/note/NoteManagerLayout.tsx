@@ -22,3 +22,5 @@ export const NoteManagerLayout: FC<NoteManagerLayoutProps> = memo(({aside, child
     </div>
   )
 })
+
+NoteManagerLayout.displayName = "NoteManagerLayout"

@@ -1,4 +1,4 @@
-import {MutableRefObject, RefObject, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 
 
 type TargetType = {
@@ -80,7 +80,7 @@ export function useLongPush<T extends HTMLElement>(onLongPush: () => void) {
       el.__safe_onmousemove = undefined
       el.__safe_onmouseup = undefined
     }
-  }, [ref.current, onLongPush])
+  }, [onLongPush])
 
   return ref
 }

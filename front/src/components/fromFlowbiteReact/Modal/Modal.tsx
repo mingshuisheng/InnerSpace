@@ -83,8 +83,8 @@ const ModalComponent: FC<ModalProps> = ({
     // If the current value of the ref is not already a child of the root element,
     // append it or replace its parent.
     if (containerRef.current.parentNode !== root && windowExists()) {
-      root = root || document.body;
-      root.appendChild(containerRef.current);
+      const parentNode = root || document.body;
+      parentNode.appendChild(containerRef.current);
     }
     return () => {
       const container = containerRef.current;
@@ -96,7 +96,7 @@ const ModalComponent: FC<ModalProps> = ({
         containerRef.current = null;
       }
     };
-  }, []);
+  }, [root]);
 
   useKeyDown('Escape', () => {
     if (dismissible && onClose) {

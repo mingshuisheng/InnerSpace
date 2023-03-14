@@ -13,7 +13,7 @@ export const NoteLayout: FC<NoteLayoutProps> = ({children, noteDataList}) => {
   const router = useRouter();
   const handlerTreeItemClick = useCallback((data: NoteData) => {
     router.push(`/note/${data.id}`).then(null)
-  }, [])
+  }, [router])
 
   let selectedNoteData = RootNoteData
 
@@ -34,3 +34,5 @@ export const NoteLayout: FC<NoteLayoutProps> = ({children, noteDataList}) => {
     </div>
   )
 }
+
+NoteLayout.displayName = "NoteLayout"

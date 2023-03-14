@@ -19,4 +19,9 @@ export class AuthController {
     return this.authService.refresh(body.refreshToken);
   }
 
+  @Post('checkToken')
+  async checkToken(@Body() params: {token: string}) {
+    return this.authService.checkToken(params.token);
+  }
+
 }

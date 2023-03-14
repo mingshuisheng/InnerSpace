@@ -2,11 +2,11 @@ import {newFetra, Fetcher, Fetra} from "@/utils/fetra";
 import {WrapFunction} from "@/utils/TypeUtils";
 
 type WrapFetra = {
-  get: <T = unknown>(url: string, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
-  post: <T = unknown>(url: string, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
-  put: <T = unknown>(url: string, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
-  delete: <T = unknown>(url: string, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
-  patch: <T = unknown>(url: string, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  get: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  post: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  put: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  delete: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  patch: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
 }
 
 export type BuildApiParams<T extends Record<string, Function>> = WrapFunction<T, (fetra: WrapFetra) => void>
@@ -18,7 +18,7 @@ export const buildApi = <T extends Record<string, Function>>(params: BuildApiPar
   const {get, post, put, patch, delete: del} = fetraOrigin
 
   const fetra: WrapFetra = {
-    get: async <T = unknown>(url: string, params: Record<string, any> = {}, headers: HeadersInit = {}) => {
+    get: async <T = unknown>(url: string | URL, params: Record<string, any> = {}, headers: HeadersInit = {}) => {
       let requestUrl = url
       if (params) {
         requestUrl += "?" + new URLSearchParams(Object.entries(params)).toString()
@@ -47,7 +47,7 @@ export const buildApi = <T extends Record<string, Function>>(params: BuildApiPar
 
 
 const createWrapFetraFunction = (fun: Fetcher) => {
-  return async <T = unknown>(url: string, params: Record<string, any> = {}, headers: HeadersInit = {}) => {
+  return async <T = unknown>(url: string | URL, params: Record<string, any> = {}, headers: HeadersInit = {}) => {
     const init: RequestInit = {
       headers: {
         ...headers,

@@ -29,3 +29,5 @@ export const EditNoteLayer: FC = memo(() => {
     </Modal>
   )
 })
+
+EditNoteLayer.displayName = "EditNoteLayer"

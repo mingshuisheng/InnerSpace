@@ -22,3 +22,5 @@ export const NoteManagerPage: FC = memo(() => {
     </>
   )
 })
+
+NoteManagerPage.displayName = "NoteManagerPage"

@@ -26,7 +26,7 @@ export const TreeView: FC<TreeViewProps> = memo(({
     onSelectionChange?.(data)
   }, [onSelectionChange])
 
-  const context = useMemo<TreeViewContextType>(() => ({selectedTreeData: selectedData || dataArr[0], onItemClick: handlerItemClick, treeItemLabel}), [selectedData, handlerItemClick, treeItemLabel])
+  const context = useMemo<TreeViewContextType>(() => ({selectedTreeData: selectedData || dataArr[0], onItemClick: handlerItemClick, treeItemLabel}), [selectedData, handlerItemClick, treeItemLabel, dataArr])
 
   return (
     <TreeViewContext.Provider value={context}>
@@ -41,3 +41,5 @@ export const TreeView: FC<TreeViewProps> = memo(({
     </TreeViewContext.Provider>
   )
 })
+
+TreeView.displayName = "TreeView"

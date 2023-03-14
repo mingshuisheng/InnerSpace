@@ -44,3 +44,5 @@ export const DeleteNoteLayer = memo(() => {
     </Modal.Body>
   </Modal>;
 })
+
+DeleteNoteLayer.displayName = "DeleteNoteLayer"

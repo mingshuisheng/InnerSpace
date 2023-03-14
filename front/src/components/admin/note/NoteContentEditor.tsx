@@ -15,3 +15,5 @@ export const NoteContentEditor: FC = memo(() => {
     </div>
   )
 })
+
+NoteContentEditor.displayName = "NoteContentEditor"

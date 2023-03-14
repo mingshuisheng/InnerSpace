@@ -30,3 +30,5 @@ export const AddOrEditNoteLayer: FC = memo(() => {
     </Modal>
   )
 })
+
+AddOrEditNoteLayer.displayName = "AddOrEditNoteLayer"

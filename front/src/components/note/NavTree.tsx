@@ -19,3 +19,5 @@ export const NavTree: FC<NavTreeProps> = memo(({noteDataList, selectedNoteData, 
     </div>
   )
 })
+
+NavTree.displayName = "NavTree"

@@ -63,11 +63,21 @@ export const TreeItem: FC<TreeItemProps> = ({data}) => {
 }
 
 const needExpend = (data: TreeData, selectedData: TreeData): boolean => {
-  if (data === selectedData) {
+  if (data.id === selectedData.id) {
     return false
   }
   if (data.children) {
-    return data.children.some(child => needExpend(child, selectedData))
+    return data.children.some(child => hasSelected(child, selectedData))
+  }
+  return false
+}
+
+const hasSelected = (data: TreeData, selectedData: TreeData): boolean => {
+  if (data.id === selectedData.id) {
+    return true
+  }
+  if (data.children) {
+    return data.children.some(child => child.id === selectedData.id || hasSelected(child, selectedData))
   }
   return false
 }

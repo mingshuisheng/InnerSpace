@@ -2,13 +2,19 @@ import {create} from 'zustand'
 import {api} from "@/server/api";
 import {NoteData, NullNoteData, RootNoteData} from "@/types/NoteData";
 
-const {getNoteTree, addNote, modifyNote, deleteNote, getNoteContent, modifyNoteContent} = api
+const {getNoteTree, addNote, modifyNote, deleteNote, getNoteContent, modifyNoteContent, revalidatePages, revalidatePage} = api
+
+const revalidateNotePages = () => revalidatePages("/note")
+const revalidateNotePage = (id: number) => revalidatePage(`/note/${id}`)
 
 // 侧边栏的数据
 interface NoteDataAsideStore {
   noteDataArr: NoteData[]
   selectedNoteData: NoteData
 }
+
+//判断是否加载过第一个笔记内容
+let loadFirstNoteContent = false
 
 const noteDataAsideStore = create<NoteDataAsideStore>(() => ({
   noteDataArr: [],
@@ -17,6 +23,10 @@ const noteDataAsideStore = create<NoteDataAsideStore>(() => ({
 export const reloadNoteDataList = async () => {
   const data = await getNoteTree()
   noteDataAsideStore.setState({noteDataArr: data})
+  if(!loadFirstNoteContent){
+    loadFirstNoteContent = true
+    await setSelectNoteData(data[0])
+  }
 }
 const noteDataArrSelector = (state: NoteDataAsideStore) => state.noteDataArr
 export const useNoteDataArr = () => noteDataAsideStore(noteDataArrSelector)
@@ -55,6 +65,7 @@ export const submitAddLayer = async () => {
   const parentId = addLayerStore.getState().noteData.id;
   await addNote(parentId === NullNoteData.id ? null : parentId, addLayerStore.getState().inputValue)
   await reloadNoteDataList()
+  await revalidateNotePages()
   closeAddLayer()
 }
 
@@ -84,6 +95,7 @@ export const closeEditLayer = () => editLayerStore.setState({open: false, inputV
 export const submitEditLayer = async () => {
   await modifyNote(editLayerStore.getState().noteData.id, editLayerStore.getState().inputValue)
   await reloadNoteDataList()
+  await revalidateNotePages()
   closeEditLayer()
 }
 
@@ -106,6 +118,7 @@ export const closeDeleteLayer = () => deleteLayerStore.setState({open: false, no
 export const submitDeleteLayer = async () => {
   await deleteNote(deleteLayerStore.getState().noteData.id)
   await reloadNoteDataList()
+  await revalidateNotePages()
   closeDeleteLayer()
 }
 
@@ -131,4 +144,5 @@ export const saveNoteContent = async () => {
   const id = noteDataAsideStore.getState().selectedNoteData.id
   await modifyNoteContent(id, inputContent)
   setNoteContent(noteContentStore.getState().inputContent)
+  await revalidateNotePage(id)
 }

@@ -14,8 +14,8 @@ export const LoginLayer: FC = memo(() => {
   const userName = useUserName()
   const password = usePassword()
   const loginErrorText = useLoginErrorText()
-  const handleUserNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value), [setUserName]);
-  const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value), [setPassword]);
+  const handleUserNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value), []);
+  const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value), []);
   const handleInput = useCallback((e: FormEvent<HTMLInputElement>) => {
     //如果是回车键，就提交表单
     if (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.key === 'Enter') {
@@ -69,3 +69,5 @@ export const LoginLayer: FC = memo(() => {
     </Modal>
   )
 })
+
+LoginLayer.displayName = "LoginLayer"

@@ -49,4 +49,22 @@ export class AuthService {
       refreshToken: this.jwtService.sign({...userInfo, type: "refresh_token"}, {expiresIn: "7d"})
     }
   }
+
+  async checkToken(token: string): Promise<{ error: string } | { isValid: boolean }> {
+    try {
+      const verify = await this.jwtService.verifyAsync(token);
+      if (verify.type !== "access_token") {
+        return {
+          error: "Invalid access token"
+        }
+      }
+      return {
+        isValid: true
+      }
+    } catch (e) {
+      return {
+        error: "Invalid access token"
+      }
+    }
+  }
 }
