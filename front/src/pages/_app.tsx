@@ -23,21 +23,21 @@ const navDataStart: NavData[] = [
   },
 ]
 
-const navDataEnd: NavData[] = [
-  {
-    title: "关于",
-    href: "/about",
-    matcher: "^/about$"
-  },
-  {
-    title: "更多",
-    href: "/more",
-    matcher: "^/more$"
-  },
-]
+// const navDataEnd: NavData[] = [
+//   {
+//     title: "关于",
+//     href: "/about",
+//     matcher: "^/about$"
+//   },
+//   {
+//     title: "更多",
+//     href: "/more",
+//     matcher: "^/more$"
+//   },
+// ]
 
 const App: FC<AppProps> = function ({Component, pageProps}): JSX.Element {
-  const localNavData = [...navDataStart, ...navDataEnd]
+  const localNavData = [...navDataStart]
   let router = useRouter();
   return (
     <Suspense
