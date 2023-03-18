@@ -3,9 +3,9 @@ app:
 database:
   user: root
   password: root
-  host: 127.0.0.1
+  host: mysql
   port: 3306
   database: inner_space
 note:
-  savePath: ./note
+  savePath: ../note
   rootNoteName: root.md

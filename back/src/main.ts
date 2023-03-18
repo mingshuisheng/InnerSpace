@@ -9,6 +9,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  await app.listen(configService.get<number>('app.port'))
+  await app.listen(configService.get<number>('app.port'), '0.0.0.0')
+
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap().then(null)

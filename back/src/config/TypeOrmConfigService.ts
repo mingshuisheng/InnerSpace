@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import {DatabaseConfig, databaseConfigName} from "./database.config";
 import {Note} from "../entity/note.entity";
 import {User} from "../entity/user.entity";
+import {getDataBaseConfig} from "./database.config";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const databaseConfig = this.configService.get<DatabaseConfig>(databaseConfigName)
+    const databaseConfig = getDataBaseConfig(this.configService)
     return {
       type: 'mysql',
       host: databaseConfig.host,

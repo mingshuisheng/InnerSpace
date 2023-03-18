@@ -1,9 +1,10 @@
 import { readFileSync } from 'fs';
 // import {databaseConfigName} from "./DatabaseConfig";
 import * as yaml from 'js-yaml';
-// import { join } from 'path';
+import { join } from 'path';
+import { cwd } from 'process';
 
-const YAML_CONFIG_FILENAME = './config.yaml';
+const YAML_CONFIG_FILENAME = join(cwd(),'config.yaml')
 
 export default () => {
   // return ({

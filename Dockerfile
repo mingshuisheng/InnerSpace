@@ -1,26 +1,30 @@
 # Use official node image as base
 FROM node:alpine
 
+RUN apk add --no-cache bash
+
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
+# Copy source
+COPY . .
 
 # Install pnpm globally
 RUN npm install -g pnpm
 
-# Install dependencies
+RUN pnpm config set registry http://registry.npmmirror.com
+
+
+WORKDIR /app/back
 RUN pnpm install
 
-# Copy source files
-COPY . .
-
-# Build app
-RUN pnpm run build
+WORKDIR /app/front
+RUN pnpm install
 
 # Expose port 3000
 EXPOSE 3000
+#EXPOSE 8080
 
 # Start app
-CMD ["pnpm", "start"]
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["cd /app/back && pnpm start & cd /app/front && pnpm start"]
