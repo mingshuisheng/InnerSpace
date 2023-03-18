@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN npm install -g pnpm --registry http://registry.npmmirror.com
 
 RUN pnpm config set registry http://registry.npmmirror.com
 
