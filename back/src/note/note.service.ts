@@ -85,7 +85,7 @@ export class NoteService implements OnApplicationBootstrap {
 
   async buildTree() {
     const notes = await this.noteRepository.find();
-    const rootNoteVos = notes.map(note => new NoteVo(note.id, note.parentId, note.name));
+    const rootNoteVos = notes.map(note => entityToVo(note));
     const voMap = rootNoteVos.reduce((map, cur) => map.set(cur.id, cur), new Map<number, NoteVo>());
     rootNoteVos
       .filter(noteVo => voMap.has(noteVo.parentId))

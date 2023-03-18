@@ -1,4 +1,4 @@
-import {newFetra, Fetcher, Fetra} from "@/utils/fetra";
+import {Fetcher, Fetra} from "@/utils/fetra";
 import {WrapFunction} from "@/utils/TypeUtils";
 
 type WrapFetra = {
@@ -58,7 +58,7 @@ const createWrapFetraFunction = (fun: Fetcher) => {
       init.body = JSON.stringify(params)
     }
     const response = await fun(url, init);
-    const data = response.json()
+    const data = await response.json()
     return data as T
   }
 }
@@ -66,7 +66,7 @@ const createWrapFetraFunction = (fun: Fetcher) => {
 export const getUrlByInput = (input: RequestInfo | URL) => {
   if (typeof input === "string") {
     return input
-  }else if(input instanceof URL){
+  } else if (input instanceof URL) {
     return input.toString()
   }
   return input.url

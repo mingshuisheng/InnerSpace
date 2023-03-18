@@ -47,7 +47,7 @@ export class NoteController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('/content/:id')
-  changeDetail(@Param('id') id: string, @Body() patchNoteContentDto: PatchNoteDetailDto) {
+  changeContent(@Param('id') id: string, @Body() patchNoteContentDto: PatchNoteDetailDto) {
     return this.noteService.changeContent(+id, patchNoteContentDto.noteContent);
   }
 
