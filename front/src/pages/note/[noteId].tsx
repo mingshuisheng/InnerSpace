@@ -1,8 +1,10 @@
 import {FC} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
 import {NoteData, RootNoteData} from "@/types/NoteData";
-import {Head, Markdown, NoteLayout} from "@/components";
+import {Markdown} from "@/components";
 import {api} from "@/server/api";
+import {Head} from "@/pageComponents/common";
+import {NoteLayout} from "@/pageComponents/note";
 
 type Props = {
   noteDataList: NoteData[],

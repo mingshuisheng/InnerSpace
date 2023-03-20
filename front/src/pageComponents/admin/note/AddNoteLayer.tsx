@@ -9,7 +9,7 @@ import {
 } from "./store";
 
 
-export const AddOrEditNoteLayer: FC = memo(() => {
+export const AddNoteLayer: FC = memo(() => {
   const inputValue = useAddLayerInputValue()
   const isOpen = useAddLayerOpen()
 
@@ -31,4 +31,4 @@ export const AddOrEditNoteLayer: FC = memo(() => {
   )
 })
 
-AddOrEditNoteLayer.displayName = "AddOrEditNoteLayer"
+AddNoteLayer.displayName = "AddOrEditNoteLayer"

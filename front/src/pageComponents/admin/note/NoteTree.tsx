@@ -5,9 +5,9 @@ import {
   addNoteData, setSelectNoteData,
   useNoteDataArr,
   useSelectedNoteData
-} from "@/components/admin/note/store";
-import {NoteTreeItemLabel} from "@/components/admin/note/NoteTreeItemLabel";
-import {ActionButtonGroup} from "@/components/admin/note/ActionButtonGroup";
+} from "./store";
+import {NoteTreeItemLabel} from "./NoteTreeItemLabel";
+import {ActionButtonGroup} from "./ActionButtonGroup";
 
 
 export const NoteTree: FC = memo(() => {

@@ -6,7 +6,7 @@ import {
   useEditLayerInputValue,
   useEditLayerOpen,
   setEditLayerInputValue, submitEditLayer
-} from "@/components/admin/note/store";
+} from "./store";
 
 
 export const EditNoteLayer: FC = memo(() => {

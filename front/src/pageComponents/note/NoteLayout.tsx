@@ -1,5 +1,5 @@
 import {FC, PropsWithChildren, useCallback} from "react";
-import {NavTree} from "@/components/note/NavTree";
+import {NavTree} from "./NavTree";
 import {NoteData, RootNoteData} from "@/types/NoteData";
 import {useRouter} from "next/router";
 import {Divider, Flex1Full} from "@/components";

@@ -5,10 +5,10 @@ import "react-markdown-editor-lite/lib/index.css";
 import {flowbiteTheme as theme} from '../theme';
 
 import {Flowbite, Spinner} from 'flowbite-react';
-import {Layout} from "@/components";
 import {NavData} from "@/types/NavData";
 import {useRouter} from "next/router";
 import {RootNoteData} from "@/types/NoteData";
+import {Layout} from "@/pageComponents/common";
 
 const navDataStart: NavData[] = [
   {

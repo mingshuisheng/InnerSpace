@@ -1,7 +1,7 @@
 import {TreeItemLabelComponent} from "@/components";
 import {memo, useCallback} from "react";
-import {addNoteData, deleteNoteData, editNoteData} from "@/components/admin/note/store";
-import {ActionButtonGroup} from "@/components/admin/note/ActionButtonGroup";
+import {addNoteData, deleteNoteData, editNoteData} from "./store";
+import {ActionButtonGroup} from "./ActionButtonGroup";
 import {RootNoteData} from "@/types/NoteData";
 
 export const NoteTreeItemLabel: TreeItemLabelComponent = memo(({data}) => {

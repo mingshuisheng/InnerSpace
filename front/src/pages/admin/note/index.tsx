@@ -1,8 +1,9 @@
 import {FC} from "react";
-import {NoteManagerPage} from "@/components/admin/note/NoteManagerPage";
-import {useSelectedNoteData} from "@/components/admin/note/store";
-import {Head, WithAuth} from "@/components";
+import {NoteManagerPage} from "@/pageComponents/admin/note/NoteManagerPage";
+import {useSelectedNoteData} from "@/pageComponents/admin/note/store";
 import {RootNoteData} from "@/types/NoteData";
+import {Head} from "@/pageComponents/common";
+import {WithAuth} from "@/pageComponents/admin";
 
 const NoteManager: FC = () => {
   const noteData = useSelectedNoteData();

@@ -6,7 +6,7 @@ import {
   useLoginLayerOpened,
   usePassword,
   useUserName
-} from "@/components/admin/withAuth/store";
+} from "./store";
 import {Button, Label, TextInput} from "flowbite-react";
 
 export const LoginLayer: FC = memo(() => {

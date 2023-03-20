@@ -1,8 +1,8 @@
 import {FC, memo} from "react";
 import MdEditor from "react-markdown-editor-lite";
 import {Markdown} from "@/components";
-import {saveNoteContent, setInputContent, useInputContent} from "@/components/admin/note/store";
-import {useOnSave} from "@/utils/EventUtils";
+import {saveNoteContent, setInputContent, useInputContent} from "./store";
+import {useOnSave} from "@/hooks/useOnSave";
 
 export const NoteContentEditor: FC = memo(() => {
   const inputContent = useInputContent()

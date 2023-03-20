@@ -1,5 +1,5 @@
 import {Fetcher, Fetra} from "@/utils/fetra";
-import {WrapFunction} from "@/utils/TypeUtils";
+import {WrapFunction} from "@/types/TypeUtils";
 
 type WrapFetra = {
   get: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
