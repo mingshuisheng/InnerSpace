@@ -8,7 +8,7 @@ import {Flowbite, Spinner} from 'flowbite-react';
 import {NavData} from "@/types/NavData";
 import {useRouter} from "next/router";
 import {RootNoteData} from "@/types/NoteData";
-import {Layout} from "@/pageComponents/common";
+import {Layout} from "@/pageComponents/mainSite/layout";
 
 const navDataStart: NavData[] = [
   {

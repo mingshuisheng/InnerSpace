@@ -1,1 +1,1 @@
-export * from "./NoteManagerLayout"
+export {NoteManagerPage} from "./NoteManagerPage"

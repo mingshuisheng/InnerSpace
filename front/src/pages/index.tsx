@@ -1,7 +1,7 @@
 import {FC} from "react";
-import {MiniGame} from "@/pageComponents/home/MiniGame";
+import {MiniGame} from "@/pageComponents/mainSite/home/MiniGame";
 import {GetStaticProps} from "next";
-import {Head} from "@/pageComponents/common";
+import {Head} from "@/pageComponents/mainSite/layout";
 
 type Props = {
 

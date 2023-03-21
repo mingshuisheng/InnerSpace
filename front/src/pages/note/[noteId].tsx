@@ -3,8 +3,8 @@ import {GetStaticPaths, GetStaticProps} from "next";
 import {NoteData, RootNoteData} from "@/types/NoteData";
 import {Markdown} from "@/components";
 import {api} from "@/server/api";
-import {Head} from "@/pageComponents/common";
-import {NoteLayout} from "@/pageComponents/note";
+import {Head} from "@/pageComponents/mainSite/layout";
+import {NoteLayout} from "@/pageComponents/mainSite/note";
 
 type Props = {
   noteDataList: NoteData[],
