@@ -19,7 +19,7 @@ export const navDataArr: NavData[] = [
     href: "/setting"
   },
   {
-    title: "添加用户",
+    title: "添加管理员",
     href: "/setting/other"
   }
 ]

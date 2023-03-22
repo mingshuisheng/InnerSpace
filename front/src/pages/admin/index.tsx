@@ -1,7 +1,7 @@
 import {FC} from "react";
-import {HashRouter, MemoryRouter, Route, Routes} from "react-router-dom"
+import {HashRouter, MemoryRouter} from "react-router-dom"
 import {Layout} from "@/pageComponents/admin/layout/Layout";
-import {navDataArr, routes} from "@/pageComponents/admin";
+import {navDataArr, routes, WithAuth} from "@/pageComponents/admin";
 import {RouterView} from "@/pageComponents/admin/RouterView";
 
 //避免开发模式下报错
@@ -19,5 +19,5 @@ const AdminPage: FC = () => {
 }
 
 
-// export default WithAuth(AdminPage)
-export default AdminPage
+export default WithAuth(AdminPage)
+// export default AdminPage

@@ -26,6 +26,10 @@ export class UsersService implements OnApplicationBootstrap {
     return await this.userRepository.findOneBy({name: name})
   }
 
+  async findOneUserById(id: number): Promise<User> {
+    return await this.userRepository.findOneBy({id: id})
+  }
+
   async findOne(username: string): Promise<UserVo> {
     const user = await this.userRepository.findOneBy({name: username})
     return toUserVo(user);

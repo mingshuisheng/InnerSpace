@@ -3,6 +3,7 @@ import {UsersService} from "../users/users.service";
 import {JwtService} from '@nestjs/jwt';
 import {HashService} from "../hash/hash.service";
 import {UserInfo} from "./user.info";
+import {ChangePasswordDto} from "./dto/changePassword.dto";
 
 @Injectable()
 export class AuthService {
@@ -65,6 +66,23 @@ export class AuthService {
       return {
         error: "Invalid access token"
       }
+    }
+  }
+
+  async changePassword(params: ChangePasswordDto, userId: number) {
+    let user = await this.usersService.findOneUserById(userId);
+    if(user && await this.hashService.compare(params.oldPassword, user.password)) {
+      user.password = params.newPassword;
+      await this.usersService.save(user);
+      return {
+        success: true,
+        error: null
+      }
+    }
+
+    return {
+      success: false,
+      error: "Invalid password"
     }
   }
 }

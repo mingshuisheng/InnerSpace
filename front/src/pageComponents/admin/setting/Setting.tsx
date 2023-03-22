@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {Flex1Full} from "@/components";
 import {RouterView} from "@/pageComponents/admin/RouterView";
-import {routes} from "@/pageComponents/admin/setting/router";
+import {navDataArr, routes} from "@/pageComponents/admin/setting/router";
 import {SidebarNav} from "@/pageComponents/admin/setting/SidebarNav";
 
 export const Setting: FC = () => {
@@ -11,7 +11,7 @@ export const Setting: FC = () => {
     <div className="w-full h-full flex overflow-auto justify-center">
       <div className="w-3/4 h-full flex">
         <div className="w-1/4 flex justify-center">
-          <SidebarNav />
+          <SidebarNav navDataArr={navDataArr} />
         </div>
         <Flex1Full>
           <div className="w-full h-full p-2 box-border">
