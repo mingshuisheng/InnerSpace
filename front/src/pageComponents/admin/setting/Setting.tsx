@@ -6,7 +6,6 @@ import {SidebarNav} from "@/pageComponents/admin/setting/SidebarNav";
 
 export const Setting: FC = () => {
 
-
   return (
     <div className="w-full h-full flex overflow-auto justify-center">
       <div className="w-3/4 h-full flex">

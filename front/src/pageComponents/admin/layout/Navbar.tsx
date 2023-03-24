@@ -20,7 +20,7 @@ export const Navbar: FC<NavbarProps> = ({navDataArr}) => {
       <Tabs.Group style="default" onActiveTabChange={index => navigateFunction(navDataArr[index].href)}>
         {
           navDataArr.map(navData => (
-            <Tabs.Item key={navData.href} title={navData.title} active={location.pathname === navData.href}/>
+            <Tabs.Item key={navData.href} title={navData.title} active={new RegExp(navData.matcher || "").test(location.pathname)}/>
           ))
         }
       </Tabs.Group>

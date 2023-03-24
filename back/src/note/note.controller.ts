@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  CacheInterceptor, CacheKey, UseGuards
+  CacheInterceptor, CacheKey, UseGuards, ParseIntPipe
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
@@ -35,24 +35,24 @@ export class NoteController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
-    return this.noteService.update(+id, updateNoteDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateNoteDto: UpdateNoteDto) {
+    return this.noteService.update(id, updateNoteDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.noteService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.noteService.remove(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('/content/:id')
-  changeContent(@Param('id') id: string, @Body() patchNoteContentDto: PatchNoteDetailDto) {
-    return this.noteService.changeContent(+id, patchNoteContentDto.noteContent);
+  changeContent(@Param('id', ParseIntPipe) id: number, @Body() patchNoteContentDto: PatchNoteDetailDto) {
+    return this.noteService.changeContent(id, patchNoteContentDto.noteContent);
   }
 
   @Get('/content/:id')
-  getDetail(@Param('id') id: string) {
-    return this.noteService.getContent(+id);
+  getDetail(@Param('id', ParseIntPipe) id: number) {
+    return this.noteService.getContent(id);
   }
 }

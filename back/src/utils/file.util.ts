@@ -24,6 +24,10 @@ export namespace FileUtil {
     await fsWriteFile(fileName, content, {encoding: "utf-8"});
   }
 
+  export async function writeFileBuffer(fileName: string, content: NodeJS.ArrayBufferView){
+    await fsWriteFile(fileName, content);
+  }
+
   //读取文件内容
   export async function readFile(fileName: string){
     return await fsReadFile(fileName, {encoding: "utf-8"});

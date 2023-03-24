@@ -22,14 +22,17 @@ export const routes: RouteObject[] = [
 export const navDataArr: NavData[] = [
   {
     title: "主页",
-    href: "/"
+    href: "/",
+    matcher: "^/$"
   },
   {
     title: "笔记",
-    href: "/note"
+    href: "/note",
+    matcher: "^/note"
   },
   {
     title: "设置",
-    href: "/setting"
+    href: "/setting",
+    matcher: "^/setting.*"
   }
 ]

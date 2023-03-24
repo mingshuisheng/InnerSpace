@@ -7,6 +7,7 @@ type WrapFetra = {
   put: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
   delete: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
   patch: <T = unknown>(url: string | URL, params?: Record<string, any>, headers?: HeadersInit) => Promise<T>
+  origin: <T = unknown>(url: string | URL, init?: RequestInit) => Promise<T>
 }
 
 export type BuildApiParams<T extends Record<string, Function>> = WrapFunction<T, (fetra: WrapFetra) => void>
@@ -15,7 +16,7 @@ type ParamKeys<T extends Record<string, Function>> = keyof T
 
 export const buildApi = <T extends Record<string, Function>>(params: BuildApiParams<T>, fetraOrigin: Fetra): BuildApiReturn<T> => {
 
-  const {get, post, put, patch, delete: del} = fetraOrigin
+  const {get, post, put, patch, delete: del, origin} = fetraOrigin
 
   const fetra: WrapFetra = {
     get: async <T = unknown>(url: string | URL, params: Record<string, any> = {}, headers: HeadersInit = {}) => {
@@ -31,6 +32,11 @@ export const buildApi = <T extends Record<string, Function>>(params: BuildApiPar
     put: createWrapFetraFunction(put),
     patch: createWrapFetraFunction(patch),
     delete: createWrapFetraFunction(del),
+    origin: async <T = unknown>(url: string | URL, init: RequestInit = {}) => {
+      const response = await origin(url, init);
+      const data = response.json();
+      return data as T
+    }
   }
 
   const keys: ParamKeys<T>[] = Object.keys(params) as ParamKeys<T>[]

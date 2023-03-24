@@ -16,6 +16,7 @@ export function processRestful(fetra: Fetcher): FetraRestful {
     },
     patch: (input: RequestInfo | URL, init: RequestInit = {}) => {
       return fetra(input, {...init, method: "PATCH"})
-    }
+    },
+    origin: fetra
   };
 }

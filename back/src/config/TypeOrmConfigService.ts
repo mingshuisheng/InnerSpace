@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import {Note} from "../entity/note.entity";
 import {User} from "../entity/user.entity";
 import {getDataBaseConfig} from "./database.config";
+import {Image} from "../entity/image.entity";
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -18,8 +19,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: databaseConfig.user,
       password: databaseConfig.password,
       database: databaseConfig.database,
-      entities: [Note, User],
+      entities: [Note, User, Image],
       synchronize: true,
+      logging: true
     }
   }
 }
