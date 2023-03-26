@@ -1,0 +1,1 @@
+export {MainPageEditor} from './MainPageEditor';

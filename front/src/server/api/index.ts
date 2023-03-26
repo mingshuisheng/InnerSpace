@@ -4,14 +4,13 @@ import {getAccessToken} from "@/server/api/TokenManager";
 import {newFetra} from "@/utils/fetra";
 import {authApi, AuthApiType, loginUrl} from "@/server/api/auth";
 import {nextApi, NextApiType} from "@/server/api/nextApi";
-import {backendUrl} from "@/common/backend";
+import {getBaseUrl} from "@/common/backend";
+import {imageApi, ImageApiType} from "@/server/api/image";
 
-type TotalApiType = NoteApiType & AuthApiType & NextApiType
+type TotalApiType = NoteApiType & AuthApiType & NextApiType & ImageApiType
 type ApiType = BuildApiReturn<TotalApiType>
 
-const totalApiParams: BuildApiParams<TotalApiType> = {...NoteApi, ...authApi, ...nextApi}
-
-const getBaseUrl = () => process.browser ? "/sapi" : backendUrl;
+const totalApiParams: BuildApiParams<TotalApiType> = {...NoteApi, ...authApi, ...nextApi, ...imageApi}
 
 //创建fetra实例，并添加请求前后的处理
 const createFetra = () => {

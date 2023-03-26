@@ -25,6 +25,7 @@ export type FetraRestful = {
   put: Fetcher
   delete: Fetcher
   patch: Fetcher
+  origin: Fetcher
 }
 
 export type Fetra = FetraRestful & FetraRequestIntercept & FetraResponseIntercept & FetraErrorIntercept

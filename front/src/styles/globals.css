@@ -116,3 +116,7 @@ footer {
 /*.dark *::-webkit-scrollbar-track {*/
 /*    background: #fff;*/
 /*}*/
+
+div{
+    outline: none;
+}

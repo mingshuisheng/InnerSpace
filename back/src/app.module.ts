@@ -7,6 +7,7 @@ import {HashModule} from "./hash/hash.module";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import configuration from "./config/configuration";
 import {TypeOrmConfigService} from "./config/TypeOrmConfigService";
+import {ImageModule} from "./image/image.module";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import {TypeOrmConfigService} from "./config/TypeOrmConfigService";
     }),
     AuthModule,
     UsersModule,
-    HashModule
+    HashModule,
+    ImageModule
   ],
   controllers: [],
   providers: [],

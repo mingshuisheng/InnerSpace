@@ -8,16 +8,19 @@ import {entityToVo, NoteVo} from "./vo/note.vo";
 import {v4 as uuidv4} from 'uuid';
 import {FileUtil} from "../utils/file.util";
 import {ConfigService} from "@nestjs/config";
-import {NoteConfig, noteConfigName} from "../config/note.config";
+import {getNoteConfig, NoteConfig} from "../config/note.config";
 
 @Injectable()
 export class NoteService implements OnApplicationBootstrap {
+
+  private noteConfig: NoteConfig
 
   constructor(
     @InjectRepository(Note)
     private noteRepository: Repository<Note>,
     private configService: ConfigService,
   ) {
+    this.noteConfig = getNoteConfig(this.configService)
   }
 
   async create(createNoteDto: CreateNoteDto) {
@@ -119,12 +122,8 @@ export class NoteService implements OnApplicationBootstrap {
     return entityToVo(note, await FileUtil.readFile(this.fillNotePath(note.noteFileName)));
   }
 
-  private getNoteConfig() {
-    return this.configService.get<NoteConfig>(noteConfigName)
-  }
-
   private fillNotePath(noteFileName: string) {
-    return `${this.getNoteConfig().savePath}/${noteFileName}`
+    return `${this.noteConfig.savePath}/${noteFileName}`
   }
 
   private async writeToNote(note: Note, noteContent: string) {
@@ -133,9 +132,9 @@ export class NoteService implements OnApplicationBootstrap {
 
   async onApplicationBootstrap() {
     //判断是否需要创建笔记存放目录,如果不存在则创建
-    if (!await FileUtil.exists(this.getNoteConfig().savePath)) {
+    if (!await FileUtil.exists(this.noteConfig.savePath)) {
       //创建笔记存放目录
-      await FileUtil.mkdir(this.getNoteConfig().savePath)
+      await FileUtil.mkdir(this.noteConfig.savePath)
     }
 
     //查询是否有根节点，如果没有则创建
@@ -144,7 +143,7 @@ export class NoteService implements OnApplicationBootstrap {
       const rootNote = this.noteRepository.create({
         id: 1,
         name: "笔记主页",
-        noteFileName: this.getNoteConfig().rootNoteName,
+        noteFileName: this.noteConfig.rootNoteName,
         parentId: null,
         treeId: "0",
       });

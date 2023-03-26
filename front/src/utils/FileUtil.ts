@@ -12,6 +12,4 @@ export namespace FileUtil{
     }
     return  fsReaddir(dir);
   }
-
-
 }
