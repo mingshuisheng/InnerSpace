@@ -21,7 +21,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: databaseConfig.database,
       entities: [Note, User, Image],
       synchronize: true,
-      logging: true
+      logging: process.env.NODE_ENV === 'development',
     }
   }
 }

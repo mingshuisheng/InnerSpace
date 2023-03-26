@@ -1,26 +1,29 @@
-import {useState} from "react";
-import {useMount} from "ahooks";
+import {useEffect, useState} from "react";
+import {BrowserUtils} from "@/utils/BrowserUtils";
 
 export const useClipboard = () => {
   const [clipboardValue, setClipboardValue] = useState<string>("");
-
-  useMount(() => {
-    const clipboard = navigator.clipboard;
-    if (clipboard) {
-      clipboard.readText().then((text) => {
-        setClipboardValue(text);
-      });
+  useEffect(() => {
+    const listener = () => {
+      BrowserUtils.readFromClipboard().then(value => setClipboardValue(value))
     }
-  })
 
-  const copyToClipboard = (text: string) => {
-    const clipboard = navigator.clipboard;
-    if (clipboard) {
-      clipboard.writeText(text).then(() => {
-        setClipboardValue(text);
-      });
+    async function execute() {
+      try {
+        const value = await BrowserUtils.readFromClipboard();
+        setClipboardValue(value)
+        BrowserUtils.addClipboardChangeListener(listener)
+      } catch (e) {
+        console.error("unsupported browser", e)
+      }
     }
-  }
 
-  return { clipboardValue, copyToClipboard};
+    execute().then()
+
+    return () => {
+      BrowserUtils.removeClipboardChangeListener(listener)
+    }
+  }, [])
+
+  return {clipboardValue, copyToClipboard: BrowserUtils.writeToClipboard};
 }

@@ -9,7 +9,6 @@ export namespace BrowserUtils {
     fullPath: string
   }
 
-
   export type DataTransferResult = {
     name: string
     isFile: boolean
@@ -77,4 +76,68 @@ export namespace BrowserUtils {
       }
     })
   }
+
+  export function writeToClipboard(text: string): Promise<void> {
+    const clipboard = navigator.clipboard;
+    if (clipboard) {
+      return clipboard.writeText(text)
+    }
+    return Promise.reject()
+  }
+
+  export function readFromClipboard(): Promise<string> {
+    const clipboard = navigator.clipboard;
+    if (clipboard) {
+      return clipboard.readText()
+    }
+    return Promise.reject()
+  }
+
+
+  type ClipboardChangeListener = () => void
+  const clipboardChangeListeners: Set<ClipboardChangeListener> = new Set()
+  const clipboardInterval = 1000
+  let clipboardIntervalId: NodeJS.Timer | null = null
+  let clipboardOldValue: string | null = null
+
+  export function addClipboardChangeListener(listener: ClipboardChangeListener): void {
+    const clipboard = navigator.clipboard;
+    if (clipboard) {
+      clipboardChangeListeners.add(listener)
+      if (!clipboardIntervalId) {
+        startClipboardInterval()
+      }
+    }
+  }
+
+  export function removeClipboardChangeListener(listener: ClipboardChangeListener): void {
+    clipboardChangeListeners.delete(listener)
+    if (clipboardChangeListeners.size === 0) {
+      stopClipboardInterval()
+    }
+  }
+
+  function startClipboardInterval() {
+    readFromClipboard().then(value => {
+      clipboardOldValue = value
+      clipboardIntervalId = setInterval(() => {
+        readFromClipboard().then(nextValue => {
+          if (nextValue === clipboardOldValue) {
+            return
+          }
+          clipboardOldValue = nextValue
+          clipboardChangeListeners.forEach(listener => listener())
+        })
+      }, clipboardInterval)
+    })
+  }
+
+  function stopClipboardInterval() {
+    if (clipboardIntervalId) {
+      clearInterval(clipboardIntervalId)
+      clipboardIntervalId = null
+      clipboardOldValue = null
+    }
+  }
+
 }
