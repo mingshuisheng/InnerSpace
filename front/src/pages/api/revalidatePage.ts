@@ -7,17 +7,11 @@ type Data = {
 }
 
 export default bePostHandler<Data>(async (req, res) => {
-
-  if (req.headers['authorization'] && typeof req.body.path === "string") {
-    const token = req.headers['authorization'].split(' ')[1]
-    if (token) {
-      const result = (await api.checkToken(token)) as unknown as { isValid: boolean };
-      if (result.isValid) {
-        res.revalidate(req.body.path).then()
-        res.status(200).end();
-        return
-      }
-    }
+  const result = await api.checkToken(req.cookies.accessToken)
+  if (result.isValid) {
+    res.revalidate(req.body.path).then()
+    res.status(200).json({success: true});
+    return
   }
-  res.status(401).end();
+  res.status(401).json({success: false});
 })

@@ -5,7 +5,7 @@ import {JwtService} from "@nestjs/jwt";
 
 // @ts-ignore
 @Injectable({providedIn: 'root'})
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard('cookie-jwt') {
 
   constructor(private jwtService: JwtService) {
     super();
@@ -15,14 +15,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const request = context.switchToHttp().getRequest();
 
     //获取Authorization的值
-    const authHeader = request.headers.authorization;
+    const token = request.cookies?.accessToken;
     //如果没有Authorization的值，则抛出未授权异常
-    if (!authHeader) {
+    if (!token) {
       throw new UnauthorizedException();
     }
 
     //验证Authorization的类型是否正确，如果不正确则抛出未授权异常
-    const token = authHeader.split(' ')[1];
+    // const token = authHeader.split(' ')[1];
     const decode = this.jwtService.decode(token);
     if ((decode as Record<string, any>).type !== 'access_token') {
       throw new UnauthorizedException();

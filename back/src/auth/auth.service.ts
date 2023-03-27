@@ -27,7 +27,7 @@ export class AuthService {
     return this.getToken(userInfo)
   }
 
-  async refresh(refresh_token: string) {
+  async refresh(refresh_token: string): Promise<{ error: string } | { accessToken: string, refreshToken: string }> {
     try {
       const verify = await this.jwtService.verifyAsync(refresh_token);
       if (verify.type !== "refresh_token") {
@@ -71,7 +71,7 @@ export class AuthService {
 
   async changePassword(params: ChangePasswordDto, userId: number) {
     let user = await this.usersService.findOneUserById(userId);
-    if(user && await this.hashService.compare(params.oldPassword, user.password)) {
+    if (user && await this.hashService.compare(params.oldPassword, user.password)) {
       user.password = params.newPassword;
       await this.usersService.save(user);
       return {

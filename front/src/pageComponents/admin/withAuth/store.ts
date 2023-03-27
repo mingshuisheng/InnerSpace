@@ -1,6 +1,5 @@
 import {create} from 'zustand'
 import {api, fetra, isLoginUrl} from "@/server/api";
-import {getRefreshToken, setToken, Token} from "@/server/api/TokenManager";
 import {getUrlByInput} from "@/utils/NetworkUtils";
 import {isResponseError} from "@/server/api/ResponseError";
 
@@ -15,7 +14,7 @@ interface AuthStore {
 }
 
 const authStore = create<AuthStore>(() => ({
-  loginLayerOpened: true,
+  loginLayerOpened: false,
   userName: "",
   password: "",
   loginSuccess: false,
@@ -45,32 +44,34 @@ export const submitLogin = async () => {
     if (isResponseError(res)) {
       authStore.setState({loginErrorText: "用户名或密码错误"})
     } else {
-      setToken(res.accessToken, res.refreshToken)
-      authStore.setState({loginLayerOpened: false, loginSuccess: true, loginErrorText: ""})
+      authStore.setState({loginLayerOpened: false, loginSuccess: true, loginErrorText: "", userName: "", password: ""})
     }
   } catch (e) {
     authStore.setState({loginErrorText: "无法连接到服务器"})
   }
 }
 
+export const checkLoginStatus = async () => {
+  const result = await api.checkToken();
+  if(result.isValid){
+    authStore.setState({loginSuccess: true})
+  }else {
+    authStore.setState({loginSuccess: false, loginLayerOpened: true})
+  }
+}
+
+//设置fetra的beforeResponse钩子，用于处理401错误，实现token自动刷新
 fetra.beforeResponse(async (response, input, init, fetcher) => {
   if (response.status === 401 && !isLoginUrl(getUrlByInput(input))) {
-    if (getRefreshToken()) {
-      const refreshResponse = await fetcher("/auth/refresh", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({refreshToken: getRefreshToken()})
-      })
-      if (refreshResponse.status === 200) {
-        const data = await refreshResponse.json()
-        if (!data.error) {
-          setToken(data.accessToken, data.refreshToken)
-          return fetcher(input, init)
-        }
+    //尝试刷新token,然后重新发起请求
+    const refreshResponse = await fetcher("/auth/refresh", {method: "POST"})
+    if (refreshResponse.status === 200) {
+      const data = await refreshResponse.json()
+      if (!data.error) {
+        return fetcher(input, init)
       }
     }
+    //如果刷新token失败，则打开登录界面，登录成功后重新发起请求
     authStore.setState({loginLayerOpened: true, loginSuccess: false})
     return new Promise<Response>(resolve => {
       const unsubscribe = authStore.subscribe((state) => {
