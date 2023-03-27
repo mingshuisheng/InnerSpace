@@ -40,9 +40,8 @@ export const DropZone = memo(forwardRef<HTMLDivElement, DropZoneProps>(({classNa
     })}>
       <div className="flex flex-col items-center justify-center text-gray-400">
         <HiOutlineCloudUpload className="w-10 h-10 mb-3"/>
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-          className="font-semibold">Click to upload</span> or drag and drop</p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">drag and drop</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG</p>
       </div>
     </div>
   )
