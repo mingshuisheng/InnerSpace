@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {GetStaticPaths, GetStaticProps} from "next";
-import {NoteData, RootNoteData} from "@/types/NoteData";
+import {NoteData, NullNoteData, RootNoteData} from "@/types/NoteData";
 import {Markdown} from "@/components";
 import {api} from "@/server/api";
 import {Head} from "@/pageComponents/mainSite/layout";
@@ -32,10 +32,15 @@ const getNoteNavData = () => {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
-  const list = await getNoteNavData();
-  const paths = list.filter(item => item.id !== 0).map(item => ({
-    params: {noteId: item.id.toString()}
-  }))
+  let paths: { params: Params }[] = [];
+  try {
+    const list = await getNoteNavData();
+    paths = list.filter(item => item.id !== 0).map(item => ({
+      params: {noteId: item.id.toString()}
+    }))
+  } catch (e) {
+    console.warn("获取笔记列表失败", e)
+  }
 
   return {
     paths,
@@ -45,15 +50,22 @@ export const getStaticPaths: GetStaticPaths<Params> = async (_context) => {
 
 
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
-  const noteNavData = getNoteNavData();
-  const noteData = await api.getNoteContent(parseInt(context.params?.noteId || "0"));
-  if (!noteData.content) {
-    noteData.content = "无数据"
+  let noteDataList: NoteData[] = []
+  let noteData: NoteData & { content: string } = {...NullNoteData, content: "无数据"}
+  try {
+    const noteNavData = getNoteNavData();
+    noteData = await api.getNoteContent(parseInt(context.params?.noteId || "0"));
+    if (!noteData.content) {
+      noteData.content = "无数据"
+    }
+    noteDataList = await noteNavData
+  } catch (e) {
+    console.warn("获取笔记内容失败", e)
   }
 
   return {
     props: {
-      noteDataList: await noteNavData,
+      noteDataList: noteDataList,
       noteData: noteData
     }
   }

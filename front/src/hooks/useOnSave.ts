@@ -3,11 +3,9 @@ import {useKeyPress} from "ahooks";
 
 export const useOnSave = <T extends HTMLElement>(onSave: () => void) => {
 
-  if (typeof document !== "undefined") {
-    useKeyPress("ctrl.s", e => {
-      e.preventDefault()
-      onSave?.()
-    }, {target: document})
-  }
+  useKeyPress("ctrl.s", e => {
+    e.preventDefault()
+    onSave?.()
+  }, {target: document})
 
 }

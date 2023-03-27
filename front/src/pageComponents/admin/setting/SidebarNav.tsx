@@ -17,7 +17,7 @@ export const SidebarNav: FC<SidebarNavProps> = ({navDataArr}) => {
       <Sidebar.ItemGroup>
         {
           navDataArr.map(navData => (
-            <Sidebar.Item active={new RegExp(navData.matcher || "").test(location.pathname)}
+            <Sidebar.Item key={navData.href} active={new RegExp(navData.matcher || "").test(location.pathname)}
                           className="hover:cursor-pointer"
                           onClick={() => navigateFunction(navData.href)}>{navData.title}</Sidebar.Item>
           ))
