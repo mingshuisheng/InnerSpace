@@ -1,28 +1,26 @@
 import {ChangeEvent, FC, FormEvent, memo, useCallback} from "react";
 import {Modal} from "@/components";
 import {
-  setPassword,
-  setUserName, submitLogin, useLoginErrorText,
+  checkLoginStatus,
+  handleInput, handlePasswordChange,
+  handleUserNameChange,
+  submitLogin, useLoginErrorText,
   useLoginLayerOpened,
   usePassword,
   useUserName
 } from "./store";
 import {Button, Label, TextInput} from "flowbite-react";
+import {useMount} from "ahooks";
 
 export const LoginLayer: FC = memo(() => {
   const isOpen = useLoginLayerOpened()
   const userName = useUserName()
   const password = usePassword()
   const loginErrorText = useLoginErrorText()
-  const handleUserNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value), []);
-  const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value), []);
-  const handleInput = useCallback((e: FormEvent<HTMLInputElement>) => {
-    //如果是回车键，就提交表单
-    if (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.key === 'Enter') {
-      e.preventDefault()
-      submitLogin().then()
-    }
-  }, [])
+
+  //校验当前登录状态
+  useMount(checkLoginStatus)
+
   return (
     <Modal show={isOpen}>
       <Modal.Body>

@@ -2,6 +2,7 @@ import {create} from 'zustand'
 import {api, fetra, isLoginUrl} from "@/server/api";
 import {getUrlByInput} from "@/utils/NetworkUtils";
 import {isResponseError} from "@/server/api/ResponseError";
+import {ChangeEvent, FormEvent, useCallback} from "react";
 
 const {login} = api
 
@@ -54,9 +55,20 @@ export const submitLogin = async () => {
 export const checkLoginStatus = async () => {
   const result = await api.checkToken();
   if(result.isValid){
-    authStore.setState({loginSuccess: true})
+    authStore.setState({loginSuccess: true, loginLayerOpened: false})
   }else {
     authStore.setState({loginSuccess: false, loginLayerOpened: true})
+  }
+}
+
+
+export const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => setUserName(e.target.value)
+export const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
+export const handleInput = (e: FormEvent<HTMLInputElement>) => {
+  //如果是回车键，就提交表单
+  if (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.key === 'Enter') {
+    e.preventDefault()
+    submitLogin().then()
   }
 }
 
